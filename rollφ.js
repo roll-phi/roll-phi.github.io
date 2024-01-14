@@ -75,10 +75,8 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 
 	// The background normal curve
 	this.plot = shadow.querySelector('#plot').getContext("2d");
-
 	// The axes
 	this.axes = shadow.querySelector('#axes').getContext("2d");
-
 	// The measure range
 	this.range = shadow.querySelector('#range').getContext("2d");
     }
@@ -89,6 +87,50 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	this.draw_plot();
 	this.draw_axes();
 	this.draw_range();
+
+	// Activate mouse events
+	if (this.hasAttribute("mouse-events")) {
+	    const setRange = (x) => {
+		if (this.dragging) {
+		    this.left = this.c2p(Math.min(this.dragStart, x));
+		    this.right = this.c2p(Math.max(this.dragStart, x));
+		} else if (!this.dragLock) {
+		    this.left = this.c2p(x);
+		}
+	    };
+	    
+	    const div = this.shadowRoot.querySelector('div');
+	    div.addEventListener('mousedown', (e) => {
+		this.dragging = true;
+		this.dragLock = false;
+		this.dragStart = e.offsetX;
+		this.dragTime = Date.now()
+	    });
+	    div.addEventListener('mouseup', (e) => {
+		if (this.dragging) {
+		    if (Date.now() - this.dragTime > 200) {
+			setRange(e.offsetX);
+			this.dragLock = true;
+		    } else {
+			this.left = -Infinity;
+			this.right = Infinity;
+			this.dragLock = false;
+		    }
+		    this.dragging = false;
+		}
+	    });
+	    div.addEventListener('mousemove', (e) => setRange(e.offsetX));
+	    div.addEventListener('mouseleave', (e) => {
+		if (this.dragging) {
+		    setRange(e.offsetX);
+		    this.dragging = false;
+		    this.dragLock = true;
+		} else if (!this.dragLock) {
+		    this.left = -Infinity;
+		    this.right = Infinity;
+		}
+	    });
+	}
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -196,8 +238,6 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	val = parseFloat(val);
 	if (val === NaN)
 	    throw `Left must be a float, got ${val}`
-	if (val > this.right)
-	    throw `Left must be <= than right, got ${val} > ${this.right}`
 	if (val <= -this.maxX)
 	    val = -Infinity
 	this.setAttribute("left", val);
@@ -211,8 +251,6 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	val = parseFloat(val);
 	if (val === NaN)
 	    throw `Right must be a float, got ${val}`
-	if (val < this.left)
-	    throw `Right must be >= than left, got ${val} < ${this.left}`
 	if (val >= this.maxX)
 	    val = Infinity
 	this.setAttribute("right", val);
@@ -256,7 +294,7 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 
 	const bits = this.σ >= 1
 	      ? Math.floor(Math.log2(this.σ))
-	      : -Math.floor(Math.log2(1/this.σ));
+	      : -Math.ceil(Math.log2(1/this.σ));
 	let incr = Math.pow(2, bits - 3);
 	const minX = Math.ceil(this.scale(-this.maxX) / incr),
 	      maxX = Math.floor(this.scale(this.maxX) / incr);
@@ -307,14 +345,21 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	this.range.clearRect(0, 0, this.width, this.height);
 	this.range.fillStyle = this.getStyle('--fail-mask-color');
 	this.range.strokeStyle = this.getStyle('--target-line-color');
+	this.range.textBaseline = 'bottom';
+	this.range.textAlign = 'center';
 
 	if (this.left > -Infinity) {
 	    const x = this.p2c(this.left);
 	    this.range.fillRect(0, 0, x, this.height);
 	    this.range.beginPath()
 	    this.range.moveTo(x, 0);
-	    this.range.lineTo(x, this.height);
+	    this.range.lineTo(x, this.height - this.labelHeight / 2.5);
 	    this.range.stroke();
+	    
+	    this.range.save();
+	    this.range.fillStyle = this.getStyle('--target-line-color');
+	    this.range.fillText(this.scale(this.left).toFixed(3), x, this.height);
+	    this.range.restore();
 	}
 
 	if (this.right < Infinity) {
@@ -322,11 +367,25 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	    this.range.fillRect(x, 0, this.width - x, this.height);
 	    this.range.beginPath()
 	    this.range.moveTo(x, 0);
-	    this.range.lineTo(x, this.height);
+	    this.range.lineTo(x, this.height - this.labelHeight / 2.5);
 	    this.range.stroke();
+	    
+	    this.range.save();
+	    this.range.fillStyle = this.getStyle('--target-line-color');
+	    this.range.fillText(this.scale(this.right).toFixed(3), x, this.height);
+	    this.range.restore();
 	}
 
-	this.range.restore();
+	if (this.getStyle('--range-prob-color') &&
+	    (this.left > -Infinity || this.right < Infinity)) {
+	    this.range.save();
+	    this.range.strokeStyle = this.getStyle('--range-prob-color');
+	    this.range.font = this.getStyle('--range-prob-font');
+	    const prob = (this.prob * 100).toFixed(1) + '%';
+	    const x = 0; //(Math.max(-this.maxX, this.left) + Math.min(this.maxX, this.right)) / 2;
+	    this.range.strokeText(prob, this.p2c(x), this.plotHeight * 0.95);
+	    this.range.restore();
+	}
     }
 });
 

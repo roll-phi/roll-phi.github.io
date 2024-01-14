@@ -1,0 +1,27 @@
+<!Doctype html>
+<html>
+  <head>
+    <style>
+      norm-viz {
+	  --fill-norm-color: #5f5;
+	  --stroke-norm-color: #050;
+	  --stroke-norm-width: 0.5;
+	  --fail-mask-color: #fffa;
+	  --target-line-color: #000d;
+	  --range-prob-color: #050;
+	  --range-prob-font: 30px sans-serif;
+	  --stroke-axes-color: #aaa;
+	  --stroke-axes-width: 0.5;
+	  --fill-critical-color: #f005;
+      }
+    </style>
+    <script src="rollφ.js"></script>
+  </head>
+  <body>
+    <norm-viz mouse-events></norm-viz>
+    <input type="range" min="-4" value="0" max="4" step="any"
+	   oninput="document.querySelector('norm-viz').σ = Math.pow(2, this.value)"/>
+    <input type="range" min="-6" value="0" max="6" step="any"
+	   oninput="document.querySelector('norm-viz').μ = this.value"/>    
+  </body>
+</html>
