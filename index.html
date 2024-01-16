@@ -8,6 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
+      * { margin: 0; padding: 0; }
+      a { text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      body {
+	  font: 18px sans-serif;
+	  text-align: justify;
+	  max-width: 800px;
+	  margin: 0 auto;
+	  padding: 10px 4px;
+      }
+      h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
+      li { margin-left: 1em; }
+      
       norm-viz {
 	  --fill-norm-color: #5f5;
 	  --stroke-norm-color: #050;
@@ -24,10 +38,108 @@
     <script src="rollφ.js"></script>
   </head>
   <body>
-    <norm-viz mouse-events></norm-viz>
+    <h1>dφ: <small>the normalest game system</small></h1>
+
+    <p>dφ (pronounced <code>/dɪˈfaɪ/</code>, like <em>defy</em>) is a
+      TTRPG game system based on a new kind of die: the <em>normal
+      die</em> or dφ.</p>
+    
+    <p>Usual dice follow, ideally, a <em>uniform distribution</em>,
+      i.e., every face has the same probability of coming out. Normal
+      dice follow, well,
+      a <a href="https://en.wikipedia.org/wiki/Normal_distribution"
+      target="_blank"><em>normal distribution</em></a>, a
+      mathematically defined distribution that can output any number
+      between negative infinity and positive infinity, including
+      non-integers such
+      as <span id="random">3.141592653589793</span>&hellip; The normal
+      distribution is THE most commonly occuring probability
+      distribution in nature and appropriately describes complex
+      phenomena that depend on the sum of many small unpredictable
+      contributions&hellip; like hitting a heavily armored goblin with
+      a magic sword while surrounded by a pack of wolves! Here are
+      some advantages of the dφ over classical dice based systems:</p>
+
+    <ul>
+      <li><strong>Fine tuning.</strong> Classical systems mostly
+	behave ok in the most common and tested situations, however we
+	all have stories on how nonsensical they can become in some
+	not so rare cases. The truth is that a single die, be it the
+	d20, the d100, or something else, cannot adequately express
+	the complexity of all the situations that arise in role
+	playing. The dφ, instead, is controlled by two
+	parameters, <em>power</em> and <em>unpredictability</em>, that
+	can be fine-tuned to achieve any desired level of
+	realism&hellip; or epicism!</li>
+      <li><strong>Mathematically sound, yet simple.</strong> Would you
+	rather take a bonus die or a +3 modifier? Confused by the
+	various factors that influence a roll? dφ was designed by
+	mathematicians with the goal of being transparent for gms and
+	players and having no pathological cases. It may take a few
+	sessions learning and getting used to it, but soon you will
+	find it much more intuitive than old systems!</li>
+      <li><strong>Flexible and universal.</strong> dφ is just a
+	die. You can build many different game systems around it,
+	tuning them to your playing style and your campaign. With just
+	a few adjustments of the parameters, you can also plug it
+	inside popular game systems (D&amp;D, Pathfinder, White Wolf,
+	Chaosium, &hellip) seamlessly replacing their game mechanics.
+	Unlike classical dice based systems, dφ doesn't enforce a
+	style on the game play: epic games stay heroic, survival games
+	remain deadly, you are in control!</li>
+      <li><strong>Finer grained.</strong> Ever got frustrated that
+	your attack bonus hasn't budged for the past four levels? Dice
+	based systems are forced to use integer modifiers, like the
+	proficiency bonus in D&amp;D 5e which increases by 1 every 4
+	levels. You could use a d100 for finer grained progression,
+	but even then there are limits. And how would you like a
+	rapier that uses 70% of your Dexterity modifier and 30% of
+	your Strength modifier? Not being limited to integers, dφ can
+	accommodate for any fractional modifier, making every level
+	count!</li>
+      <li><strong>One die to rule them all.</strong> Ok, bad argument,
+	we all love dice. And yet! With dφ you will only ever need a
+	single die which adapts to every situation. You may loose on
+	the fetish, but your game system will gain in simplicity.</li>
+      <li><strong>Fun!</strong> Yes, a die can be fun! As you read on
+	you will find the concept of <em>power</em> quite familiar,
+	it's indeed nearly the same as a modifier in the d20
+	system. <em>Unpredictability</em>, however, is a whole new
+	story that will add spice to your RPG sessions. Try it if you
+	don't believe it!</li>
+    </ul>
+
+    <p>Ok, where's the catch? Well, despite being the most common
+      probability distribution in nature, the normal distribution is
+      actually difficult to emulate with a simple device like a die.
+      And even if you had a marvelous analog device that generates
+      perfect normal samples, you'd still have to do some rather
+      complicated computations to get the final result in dφ. For this
+      reason, dφ can only be used with the assistance of a digital
+      device. This can be an app on your phone, or a plugin in your
+      favorite VTT.<p>
+
+    <p>This website provides you with the tools to use dφ in your
+      gaming sessions.</p>
+
+    <h2 id="what-is-normal">What is a normal die?</h2>
+
+    <h2 id="for-players">dφ for players</h2>
+
+    <h2 id="for-gms">dφ for gms and game designers</h2>
+
+    <h2 id="for-mathematicians">dφ for mathematicians</h2>
+
+    <h2 id="dnd5e">Using dφ in D&amp;D 5e</h2>
+
+    <h2 id="white-wolf">Using dφ in White Wolf games</h2>
+
+    <h2 id="chaosium">Using dφ in Chaosium games</h2>
+    
+    <!--norm-viz mouse-events></norm-viz>
     <input type="range" min="-4" value="0" max="4" step="any"
 	   oninput="document.querySelector('norm-viz').σ = Math.pow(2, this.value)"/>
     <input type="range" min="-6" value="0" max="6" step="any"
-	   oninput="document.querySelector('norm-viz').μ = this.value"/>    
+	   oninput="document.querySelector('norm-viz').μ = this.value"/-->
   </body>
 </html>
