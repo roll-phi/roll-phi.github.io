@@ -11,6 +11,13 @@
       * { margin: 0; padding: 0; }
       a { text-decoration: none; }
       a:hover { text-decoration: underline; }
+      table { border-collapse: collapse; }
+
+      :root {
+	  --density-color: #5f5;
+	  --axis-color: #aaa;
+	  --chart-font: 30px sans-serif;
+      }
 
       body {
 	  font: 18px sans-serif;
@@ -21,18 +28,36 @@
       }
       h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
       li { margin-left: 1em; }
+      td { padding: 0 1em;}
+
+      figure {
+	  margin: 1em auto;
+	  text-align: center;
+      }
+      
+      .centering { margin: auto; }
       
       norm-viz {
-	  --fill-norm-color: #5f5;
+	  --fill-norm-color: var(--density-color);
 	  --stroke-norm-color: #050;
 	  --stroke-norm-width: 0.5;
 	  --fail-mask-color: #fffa;
 	  --target-line-color: #000d;
 	  --range-prob-color: #050;
-	  --range-prob-font: 30px sans-serif;
-	  --stroke-axes-color: #aaa;
+	  --range-prob-font: var(--chart-font);
+	  --stroke-axes-color: var(--axis-color);
 	  --stroke-axes-width: 0.5;
 	  --fill-critical-color: #f005;
+      }
+
+      svg {
+	  font: var(--chart-font);
+      }
+      svg line, svg path {
+	  stroke: var(--axis-color);
+      }
+      svg .prob {
+	  fill: var(--density-color);
       }
     </style>
     <script src="rollφ.js"></script>
@@ -124,6 +149,96 @@
 
     <h2 id="what-is-normal">What is a normal die?</h2>
 
+    <p>When rolling a fair die we expect each face to come up with the
+      same probability. So, for example, if we repeatedly roll a d6,
+      the face 6 will come up 1 out of 6 times, i.e. with probability
+      1/6. The function that associates to each outcome its
+      probability is called the <em>probability distribution</em> of
+      the die, so the probability distribution of the d6 is the
+      function:</p>
+
+    <figure>
+      <table class="centering">
+	<tr>
+	  <td>1 ↦ 1/6</td><td>2 ↦ 1/6</td>
+	</tr><tr>
+	  <td>3 ↦ 1/6</td><td>4 ↦ 1/6</td>
+	</tr><tr>
+	  <td>5 ↦ 1/6</td><td>6 ↦ 1/6</td>
+	</tr>
+      </table>
+    </figure>
+    
+    <p>Similarly, the probability distribution of a fair die with n
+      faces is the function that associates 1/n to each outcome.  This
+      is called the <em>uniform distribution</em> on n elements. A
+      good way to graphically represent a probability distribution is
+      to draw a chart where the outcomes are lined on the x-axis and
+      their probabilities are represented by bars of proportional
+      area: the higher the bar, the more likely the event. For
+      example, here's the chart for the uniform distribution on 6
+      elements.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 150" style="max-width:500px">
+	<g class="prob" transform="matrix(1,0,0,-1,0,115)">
+	  <rect x="75" y="0" width="50" height="115" />
+	  <rect x="175" y="0" width="50" height="115" />
+	  <rect x="275" y="0" width="50" height="115" />
+	  <rect x="375" y="0" width="50" height="115" />
+	  <rect x="475" y="0" width="50" height="115" />
+	  <rect x="575" y="0" width="50" height="115" />
+	  <line x1="0" x2="700" y1="0" y2="0" stroke-width="2" />
+	</g>
+	<g text-anchor="middle">
+	  <text x="100" y="150">1</text>
+	  <text x="200" y="150">2</text>
+	  <text x="300" y="150">3</text>
+	  <text x="400" y="150">4</text>
+	  <text x="500" y="150">5</text>
+	  <text x="600" y="150">6</text>
+	</g>
+      </svg>
+    </figure>
+
+    <p>Here's a less boring chart showing the probability distribution
+      of rolling 2d6.</p>
+    
+    <figure>
+      <svg viewBox="0 0 1200 335" style="max-width:500px">
+	<g class="prob" transform="matrix(1,0,0,-1,0,300)">
+	  <rect x="75" y="0" width="50" height="50" />
+	  <rect x="175" y="0" width="50" height="100" />
+	  <rect x="275" y="0" width="50" height="150" />
+	  <rect x="375" y="0" width="50" height="200" />
+	  <rect x="475" y="0" width="50" height="250" />
+	  <rect x="575" y="0" width="50" height="300" />
+	  <rect x="675" y="0" width="50" height="250" />
+	  <rect x="775" y="0" width="50" height="200" />
+	  <rect x="875" y="0" width="50" height="160" />
+	  <rect x="975" y="0" width="50" height="100" />
+	  <rect x="1075" y="0" width="50" height="50" />
+	  <line x1="0" x2="1200" y1="0" y2="0" stroke-width="2" />
+	</g>
+	<g text-anchor="middle" transform="translate(0 335)">
+	  <text x="100" y="0">2</text>
+	  <text x="200" y="0">3</text>
+	  <text x="300" y="0">4</text>
+	  <text x="400" y="0">5</text>
+	  <text x="500" y="0">6</text>
+	  <text x="600" y="0">7</text>
+	  <text x="700" y="0">8</text>
+	  <text x="800" y="0">9</text>
+	  <text x="900" y="0">10</text>
+	  <text x="1000" y="0">11</text>
+	  <text x="1100" y="0">12</text>
+	</g>
+      </svg>
+    </figure>
+
+    <p>Comparing the bars, we see that rolling a 7 is six times more
+      likely than rolling a 2. Shocking, we know.</p>
+    
     <h2 id="for-players">dφ for players</h2>
 
     <h2 id="for-gms">dφ for gms and game designers</h2>
