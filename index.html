@@ -15,8 +15,10 @@
 
       :root {
 	  --density-color: #5f5;
+	  --density-highlight: #f55;
 	  --axis-color: #aaa;
-	  --chart-font: 30px sans-serif;
+	  --axis-width: 2px;
+	  --chart-font: 14px sans-serif;
       }
 
       body {
@@ -30,12 +32,12 @@
       li { margin-left: 1em; }
       td { padding: 0 1em;}
 
-      figure {
-	  margin: 1em auto;
-	  text-align: center;
-      }
-      
       .centering { margin: auto; }
+
+      binom-viz {
+	  display: block;
+	  margin: 1ex 0;
+      }
       
       norm-viz {
 	  --fill-norm-color: var(--density-color);
@@ -49,18 +51,9 @@
 	  --stroke-axes-width: 0.5;
 	  --fill-critical-color: #f005;
       }
-
-      svg {
-	  font: var(--chart-font);
-      }
-      svg line, svg path {
-	  stroke: var(--axis-color);
-      }
-      svg .prob {
-	  fill: var(--density-color);
-      }
     </style>
     <script src="rollφ.js"></script>
+    <script src="binomial.js"></script>
   </head>
   <body>
     <h1>dφ: <small>the normalest game system</small></h1>
@@ -179,65 +172,20 @@
       example, here's the chart for the uniform distribution on 6
       elements.</p>
 
-    <figure>
-      <svg viewBox="0 0 700 150" style="max-width:500px">
-	<g class="prob" transform="matrix(1,0,0,-1,0,115)">
-	  <rect x="75" y="0" width="50" height="115" />
-	  <rect x="175" y="0" width="50" height="115" />
-	  <rect x="275" y="0" width="50" height="115" />
-	  <rect x="375" y="0" width="50" height="115" />
-	  <rect x="475" y="0" width="50" height="115" />
-	  <rect x="575" y="0" width="50" height="115" />
-	  <line x1="0" x2="700" y1="0" y2="0" stroke-width="2" />
-	</g>
-	<g text-anchor="middle">
-	  <text x="100" y="150">1</text>
-	  <text x="200" y="150">2</text>
-	  <text x="300" y="150">3</text>
-	  <text x="400" y="150">4</text>
-	  <text x="500" y="150">5</text>
-	  <text x="600" y="150">6</text>
-	</g>
-      </svg>
-    </figure>
-
+    <binom-viz die="6" n="1"></binom-viz>
+    
     <p>Here's a less boring chart showing the probability distribution
       of rolling 2d6.</p>
     
-    <figure>
-      <svg viewBox="0 0 1200 335" style="max-width:500px">
-	<g class="prob" transform="matrix(1,0,0,-1,0,300)">
-	  <rect x="75" y="0" width="50" height="50" />
-	  <rect x="175" y="0" width="50" height="100" />
-	  <rect x="275" y="0" width="50" height="150" />
-	  <rect x="375" y="0" width="50" height="200" />
-	  <rect x="475" y="0" width="50" height="250" />
-	  <rect x="575" y="0" width="50" height="300" />
-	  <rect x="675" y="0" width="50" height="250" />
-	  <rect x="775" y="0" width="50" height="200" />
-	  <rect x="875" y="0" width="50" height="160" />
-	  <rect x="975" y="0" width="50" height="100" />
-	  <rect x="1075" y="0" width="50" height="50" />
-	  <line x1="0" x2="1200" y1="0" y2="0" stroke-width="2" />
-	</g>
-	<g text-anchor="middle" transform="translate(0 335)">
-	  <text x="100" y="0">2</text>
-	  <text x="200" y="0">3</text>
-	  <text x="300" y="0">4</text>
-	  <text x="400" y="0">5</text>
-	  <text x="500" y="0">6</text>
-	  <text x="600" y="0">7</text>
-	  <text x="700" y="0">8</text>
-	  <text x="800" y="0">9</text>
-	  <text x="900" y="0">10</text>
-	  <text x="1000" y="0">11</text>
-	  <text x="1100" y="0">12</text>
-	</g>
-      </svg>
-    </figure>
+    <binom-viz die="6" n="2"></binom-viz>
 
     <p>Comparing the bars, we see that rolling a 7 is six times more
       likely than rolling a 2. Shocking, we know.</p>
+    
+    <binom-viz id="binom-many" die="6" n="2"></binom-viz>
+    <input type="range" min="1" value="2" max="30" step="1"
+	   oninput="document.querySelector('#binom-many').n = this.value"/>
+
     
     <h2 id="for-players">dφ for players</h2>
 

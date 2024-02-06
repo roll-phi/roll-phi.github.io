@@ -136,8 +136,10 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
     attributeChangedCallback(name, oldValue, newValue) {
 	if (oldValue !== newValue) {
 	    this[name] = newValue;
-	    this.draw_axes();
-	    this.draw_range();
+	    if (this.isConnected) {
+		this.draw_axes();
+		this.draw_range();
+	    }
 	}
     }
 
