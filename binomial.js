@@ -3,7 +3,7 @@
  * A widget to visualize the binomial distribution
  */
 customElements.define("binom-viz", class BinomViz extends HTMLElement {
-    static observedAttributes = ["n"];
+    static observedAttributes = ["n", "cumulative"];
     
     constructor() {
 	super();
@@ -26,7 +26,8 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
   svg rect {
     fill: var(--density-color);
   }
-  svg rect:hover {
+  svg rect:hover,
+  svg.cumulative rect:hover ~ rect {
     fill: var(--density-highlight);
   }
   svg text {
@@ -60,7 +61,7 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
 		const val = t.dataset['x'],
 		      x = t.x.animVal.value + t.width.animVal.value / 2,
 		      y = t.height.animVal.value,
-		      prob = t.dataset['prob'],
+		      prob = this.cumulative ? t.dataset.cumulative : t.dataset.prob,
 		      plate = this.svg.querySelector('.prob');
 		plate.setAttribute('transform', `translate(${x}, ${this.plotBase - y})`);
 		plate.querySelector('text').textContent = prob + '%';
@@ -75,7 +76,7 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
     attributeChangedCallback(name, oldValue, newValue) {
 	if (oldValue !== newValue) {
 	    this[name] = newValue;
-	    if (this.isConnected)
+	    if (this.isConnected && name == 'n')
 		this.draw();
 	}
     }
@@ -116,6 +117,19 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
 	this.setAttribute("n", val);
     }
 
+    get cumulative() {
+	return this.hasAttribute('cumulative');
+    }
+    set cumulative(val) {
+	if (val !== false) {
+	    this.setAttribute('cumulative', '');
+	    this.svg.classList.add('cumulative');
+	} else {
+	    this.removeAttribute('cumulative');
+	    this.svg.classList.remove('cumulative');
+	}
+    }
+    
     /* Maths */
     
     get die() {
@@ -169,12 +183,14 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
 `;
 	const plot = this.svg.querySelector('.plot'),
 	      labels = this.svg.querySelector('.labels');
+	let cum = 0;
 	for (let i = 0; i < dist.length; i++) {
 	    let x = tikz*(i + 1);
 	    let prob = parseFloat(dist[i]);
-	    plot.innerHTML += `<rect x="${x-barhw}" y="0" width="${2*barhw}" height="${h*prob/maxprob}" class="density" data-x="${i+this.n}" data-prob="${(prob/mass*100).toFixed(2)}" />`;
+	    plot.innerHTML += `<rect x="${x-barhw}" y="0" width="${2*barhw}" height="${h*prob/maxprob}" class="density" data-x="${i+this.n}" data-prob="${(prob/mass*100).toFixed(2)}" data-cumulative="${((1-cum/mass)*100).toFixed(2)}" />`;
 	    if (i % ((dist.length >> 4) + 1) == 0)
 		labels.innerHTML += `<text x="${x}" y="${b}">${i + this.n}</text>`;
+	    cum += prob;
 	}
     }
 });
