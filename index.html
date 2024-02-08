@@ -52,8 +52,13 @@
 	  --density-color: #5f5;
 	  --density-highlight: #f55;
 	  --axis-color: #aaa;
-	  --axis-width: 2px;
+	  --axis-width: 0.5;
 	  --chart-font: 18px Fira Sans;
+	  --density-stroke-color: #050;
+	  --density-stroke-width: 0.5;
+	  --density-critical-color: #f005;
+	  --cumulative-mask-color: #fffa;
+	  --target-line-color: #000d;
       }
 
       body {
@@ -64,34 +69,12 @@
       }
       h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
       li { margin-left: 1em; }
-      figure {
-	  width: 500px;
-	  max-width: 100%;
-	  margin: 4px auto;
-      }
       
-      binom-viz {
+      figure, binom-viz, norm-viz {
 	  display: block;
 	  margin: 1ex auto;
 	  width: 500px;
 	  max-width: 100%;
-      }
-      
-      norm-viz {
-	  display: block;
-	  margin: 1ex auto;
-	  width: 500px;
-	  max-width: 100%;
-	  --fill-norm-color: var(--density-color);
-	  --stroke-norm-color: #050;
-	  --stroke-norm-width: 0.5;
-	  --fail-mask-color: #fffa;
-	  --target-line-color: #000d;
-	  --range-prob-color: #050;
-	  --range-prob-font: var(--chart-font);
-	  --stroke-axes-color: var(--axis-color);
-	  --stroke-axes-width: 0.5;
-	  --fill-critical-color: #f005;
       }
     </style>
     <script src="rollφ.js"></script>
@@ -138,7 +121,7 @@
       <li><strong>Mathematically sound, yet simple.</strong> Would you
 	rather take a bonus die or a +3 modifier? Confused by the
 	various factors that influence a roll? dφ was designed by
-	mathematicians with the goal of being transparent for gms and
+	scientists with the goal of being transparent for gms and
 	players and having no pathological cases. It may take a few
 	sessions learning and getting used to it, but soon you will
 	find it much more intuitive than old systems!</li>
@@ -339,7 +322,7 @@
 
     <h2 id="for-gms">dφ for gms and game designers</h2>
 
-    <h2 id="for-mathematicians">dφ for mathematicians</h2>
+    <h2 id="for-scientists">dφ for scientists</h2>
 
     <h2 id="dnd5e">Using dφ in D&amp;D 5e</h2>
 

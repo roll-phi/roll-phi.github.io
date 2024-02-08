@@ -12,7 +12,7 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
 	shadow.innerHTML = `
 <style>
   figure {
-    margin: auto;
+    margin: 0;
     font: var(--chart-font);
   }
   svg { display: block; }

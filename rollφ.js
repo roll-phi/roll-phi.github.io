@@ -60,8 +60,14 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	const shadow = this.attachShadow({ mode: "open" });
 	shadow.innerHTML = `
 <style>
-  div { position: relative; width: ${this.width}px; height: ${this.height}px; }
-  canvas { position: absolute; }
+  div { position: relative; }
+  canvas:first-child { position: relative; }
+  canvas {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
   #plot { z-index: 1; }
   #range { z-index: 2; }
   #axes { z-index: 3; }
@@ -84,10 +90,17 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
     /* Lifecycle */
     
     connectedCallback() {
-	this.draw_plot();
-	this.draw_axes();
-	this.draw_range();
+	this.draw();
 
+	// React to container reisizing: resize canvas and redraw
+	this.resizeObs = new ResizeObserver((entries) => {
+	    for (let c of this.shadowRoot.querySelectorAll('canvas')) {
+		c.width = entries[0].contentRect.width;
+		c.height = entries[0].contentRect.height;
+	    }
+	    this.draw();
+	}).observe(this);
+	
 	// Activate mouse events
 	if (this.hasAttribute("mouse-events")) {
 	    const setRange = (x) => {
@@ -149,11 +162,11 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
     
     /* Geometry */
     get width() {
-	return this.getAttribute("width") || 500;
+	return this.clientWidth || 500;
     }
     
     get height() {
-	return this.getAttribute("height") || 300;
+	return  this.clientHeight || (this.width / 1.5);
     }
 
     get labelHeight() {
@@ -268,9 +281,9 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
     
     draw_plot() {
 	this.plot.clearRect(0, 0, this.width, this.height);
-	this.plot.fillStyle = this.getStyle('--fill-norm-color');
-	this.plot.strokeStyle = this.getStyle('--stroke-norm-color');
-	this.plot.lineWidth = this.getStyle('--stroke-norm-width');
+	this.plot.fillStyle = this.getStyle('--density-color');
+	this.plot.strokeStyle = this.getStyle('--density-stroke-color');
+	this.plot.lineWidth = this.getStyle('--density-stroke-width');
 	
 	this.plot.beginPath();
 	this.plot.moveTo(...this.p2c(-this.maxX, Normal.pdf(-this.maxX)));
@@ -282,9 +295,9 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 
     draw_axes() {
 	this.axes.clearRect(0, 0, this.width, this.height);
-	this.axes.strokeStyle = this.getStyle('--stroke-axes-color');
-	this.axes.lineWidth = this.getStyle('--stroke-axes-width');
-	this.axes.fillStyle = this.getStyle('--fill-critical-color');
+	this.axes.strokeStyle = this.getStyle('--axis-color');
+	this.axes.lineWidth = this.getStyle('--axis-width');
+	this.axes.fillStyle = this.getStyle('--density-critical-color');
 	this.axes.textAlign = 'center';
 	this.axes.textBaseline = 'top';
 
@@ -343,9 +356,9 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	}
     }
 
-    draw_range(e) {
+    draw_range() {
 	this.range.clearRect(0, 0, this.width, this.height);
-	this.range.fillStyle = this.getStyle('--fail-mask-color');
+	this.range.fillStyle = this.getStyle('--cumulative-mask-color');
 	this.range.strokeStyle = this.getStyle('--target-line-color');
 	this.range.textBaseline = 'bottom';
 	this.range.textAlign = 'center';
@@ -378,16 +391,22 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	    this.range.restore();
 	}
 
-	if (this.getStyle('--range-prob-color') &&
+	if (this.getStyle('--density-stroke-color') &&
 	    (this.left > -Infinity || this.right < Infinity)) {
 	    this.range.save();
-	    this.range.strokeStyle = this.getStyle('--range-prob-color');
-	    this.range.font = this.getStyle('--range-prob-font');
+	    this.range.strokeStyle = this.getStyle('--density-stroke-color');
+	    this.range.font = this.getStyle('--chart-font');
 	    const prob = (this.prob * 100).toFixed(1) + '%';
 	    const x = 0; //(Math.max(-this.maxX, this.left) + Math.min(this.maxX, this.right)) / 2;
 	    this.range.strokeText(prob, this.p2c(x), this.plotHeight * 0.95);
 	    this.range.restore();
 	}
+    }
+
+    draw() {
+    	this.draw_plot();
+	this.draw_axes();
+	this.draw_range();
     }
 });
 
