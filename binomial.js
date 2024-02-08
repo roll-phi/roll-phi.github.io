@@ -12,13 +12,10 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
 	shadow.innerHTML = `
 <style>
   figure {
-    width: ${this.width}px;
-    height: ${this.height}px;
     margin: auto;
-  }
-  svg {
     font: var(--chart-font);
   }
+  svg { display: block; }
   svg line, svg path {
     stroke: var(--axis-color);
     stroke-width: var(--axis-width);
@@ -27,7 +24,7 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
     fill: var(--density-color);
   }
   svg rect:hover,
-  svg.cumulative rect:hover ~ rect {
+  .cumulative rect:hover ~ rect {
     fill: var(--density-highlight);
   }
   svg text {
@@ -43,33 +40,33 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
     visibility: hidden;
   }
 </style>
-<figure>
-  <svg viewBox="0 0 ${this.width} ${this.height}"></svg>
-</figure>
+<figure></figure>
 `
-	this.svg = shadow.querySelector('svg');
+	this.figure = shadow.querySelector('figure');
 	this.triangle = new Array();
     }
 
     /* Lifecycle */
     
     connectedCallback() {
+	for (let i = 1; i <= parseInt(this.getAttribute("precompute")); i++)
+	    this.pascal(i);
 	this.draw();
-	this.svg.addEventListener('mouseover', (e) => {
+	this.figure.addEventListener('mouseover', (e) => {
 	    const t = e.target;
 	    if (t.classList.contains('density')) {
 		const val = t.dataset['x'],
 		      x = t.x.animVal.value + t.width.animVal.value / 2,
 		      y = t.height.animVal.value,
 		      prob = this.cumulative ? t.dataset.cumulative : t.dataset.prob,
-		      plate = this.svg.querySelector('.prob');
+		      plate = this.figure.querySelector('.prob');
 		plate.setAttribute('transform', `translate(${x}, ${this.plotBase - y})`);
 		plate.querySelector('text').textContent = prob + '%';
 		plate.classList.remove('hidden');
 	    }
 	});
-	this.svg.addEventListener('mouseout', (e) => {
-	    this.svg.querySelector('.prob').classList.add('hidden');
+	this.figure.addEventListener('mouseout', (e) => {
+	    this.figure.querySelector('.prob').classList.add('hidden');
 	});
     }
 
@@ -82,16 +79,16 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
     }
 
     getStyle(prop) {
-	return getComputedStyle(this.svg).getPropertyValue(prop);
+	return getComputedStyle(this.figure).getPropertyValue(prop);
     }
     
     /* Geometry */
     get width() {
-	return this.getAttribute("width") || 500;
+	return this.clientWidth || 500;
     }
     
     get height() {
-	return this.getAttribute("height") || 250;
+	return  this.clientHeight || (this.width / 2);
     }
 
     get labelHeight() {
@@ -123,10 +120,10 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
     set cumulative(val) {
 	if (val !== false) {
 	    this.setAttribute('cumulative', '');
-	    this.svg.classList.add('cumulative');
+	    this.figure.classList.add('cumulative');
 	} else {
 	    this.removeAttribute('cumulative');
-	    this.svg.classList.remove('cumulative');
+	    this.figure.classList.remove('cumulative');
 	}
     }
     
@@ -172,17 +169,19 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
 	      maxprob = parseFloat(dist[dist.length >> 1]),
 	      mass = this.die**this.n;
 
-	this.svg.innerHTML = `
-<g class="plot" transform="matrix(1,0,0,-1,0,${b})">
-  <line x1="0" x2="${w}" y1="0" y2="0" />
-</g>
-<g class="labels"></g>
-<g class="prob hidden">
-  <text x="0" y="0""></text>
-</g>
+	this.figure.innerHTML = `
+<svg viewBox="0 0 ${this.width} ${this.height}">
+  <g class="plot" transform="matrix(1,0,0,-1,0,${b})">
+    <line x1="0" x2="${w}" y1="0" y2="0" />
+  </g>
+  <g class="labels"></g>
+  <g class="prob hidden">
+    <text x="0" y="0""></text>
+  </g>
+</svg>
 `;
-	const plot = this.svg.querySelector('.plot'),
-	      labels = this.svg.querySelector('.labels');
+	const plot = this.figure.querySelector('.plot'),
+	      labels = this.figure.querySelector('.labels');
 	let cum = 0;
 	for (let i = 0; i < dist.length; i++) {
 	    let x = tikz*(i + 1);

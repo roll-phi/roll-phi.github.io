@@ -8,38 +8,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
+      @namespace m url('http://www.w3.org/1998/Math/MathML');
+
+      @font-face{
+	  font-family: 'Fira Sans';
+	  src: url('fonts/FiraSans-Regular.woff2');
+	  font-weight: 400;
+	  font-style: normal;
+      }
+      @font-face{
+	  font-family: 'Fira Sans';
+	  src: url('fonts/FiraSans-Italic.woff2');
+	  font-weight: 400;
+	  font-style: italic;
+      }
+      @font-face{
+	  font-family: 'Fira Sans';
+	  src: url('fonts/FiraSans-Bold.woff2');
+	  font-weight: 800;
+	  font-style: normal;
+      }
+      @font-face{
+	  font-family: 'Fira Sans';
+	  src: url('fonts/FiraSans-BoldItalic.woff2');
+	  font-weight: 800;
+	  font-style: italic;
+      }
+      @font-face {
+	  font-family: Fira Math;
+	  src: url('fonts/FiraMath-Regular.woff2');
+      }
+      
       * { margin: 0; padding: 0; }
       a { text-decoration: none; }
       a:hover { text-decoration: underline; }
       table { border-collapse: collapse; }
 
+      .math, m|math { font-family: Fira Math; }
+      
       :root {
+	  font-family: Fira Sans;
+	  font-size: 18px;
 	  --density-color: #5f5;
 	  --density-highlight: #f55;
 	  --axis-color: #aaa;
 	  --axis-width: 2px;
-	  --chart-font: 14px sans-serif;
+	  --chart-font: 18px Fira Sans;
       }
 
       body {
-	  font: 18px sans-serif;
 	  text-align: justify;
-	  max-width: 800px;
+	  max-width: 40em;
 	  margin: 0 auto;
 	  padding: 10px 4px;
       }
       h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
       li { margin-left: 1em; }
-      td { padding: 0 1em;}
-
-      .centering { margin: auto; }
-
+      figure {
+	  width: 500px;
+	  max-width: 100%;
+	  margin: 4px auto;
+      }
+      
       binom-viz {
 	  display: block;
-	  margin: 1ex 0;
+	  margin: 1ex auto;
+	  width: 500px;
+	  max-width: 100%;
       }
       
       norm-viz {
+	  display: block;
+	  margin: 1ex auto;
+	  width: 500px;
+	  max-width: 100%;
 	  --fill-norm-color: var(--density-color);
 	  --stroke-norm-color: #050;
 	  --stroke-norm-width: 0.5;
@@ -54,6 +96,10 @@
     </style>
     <script src="rollφ.js"></script>
     <script src="binomial.js"></script>
+    <script>
+      const $ = document.querySelector.bind(document);
+      const $$ = document.querySelectorAll.bind(document);
+    </script>
   </head>
   <body>
     <h1>dφ: <small>the normalest game system</small></h1>
@@ -135,11 +181,12 @@
       complicated computations to get the final result in dφ. For this
       reason, dφ can only be used with the assistance of a digital
       device. This can be an app on your phone, or a plugin in your
-      favorite VTT.<p>
+      favorite VTT.</p>
 
     <p>This website provides you with the tools to use dφ in your
       gaming sessions.</p>
 
+    
     <h2 id="what-is-normal">What is a normal die?</h2>
 
     <p>When rolling a fair die we expect each face to come up with the
@@ -150,23 +197,23 @@
       the die, so the probability distribution of the d6 is the
       function:</p>
 
-    <figure>
-      <table class="centering">
-	<tr>
-	  <td>1 ↦ 1/6</td><td>2 ↦ 1/6</td>
-	</tr><tr>
-	  <td>3 ↦ 1/6</td><td>4 ↦ 1/6</td>
-	</tr><tr>
-	  <td>5 ↦ 1/6</td><td>6 ↦ 1/6</td>
-	</tr>
-      </table>
+    <figure class="math"
+	    style="display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center">
+      <span>1 ↦ 1/6</span>
+      <span>2 ↦ 1/6</span>
+      <span>3 ↦ 1/6</span>
+      <span>4 ↦ 1/6</span>
+      <span>5 ↦ 1/6</span>
+      <span>6 ↦ 1/6</span>
     </figure>
     
     <p>Similarly, the probability distribution of a fair die with n
-      faces is the function that associates 1/n to each outcome.  This
-      is called the <em>uniform distribution</em> on n elements. A
-      good way to graphically represent a probability distribution is
-      to draw a chart where the outcomes are lined on the x-axis and
+      faces is the function that associates
+      <math><mrow><mn>1</mn><mi>/</mi><mi>n</mi></mrow></math> to each
+      outcome.  This is called the <em>uniform distribution</em>
+      on <math><mi>n</mi></math> elements. A good way to graphically
+      represent a probability distribution is to draw a chart where
+      the outcomes are lined on the <math><mi>x</mi></math>-axis and
       their probabilities are represented by bars of proportional
       area: the higher the bar, the more likely the event. For
       example, here's the chart for the uniform distribution on 6
@@ -175,17 +222,118 @@
     <binom-viz die="6" n="1"></binom-viz>
     
     <p>Here's a less boring chart showing the probability distribution
-      of rolling 2d6.</p>
+      of rolling <span id="binom-many-c1">2</span>d6 (hover the mouse
+      on the bars to read the probabilities).</p>
     
-    <binom-viz die="6" n="2"></binom-viz>
-
+    <binom-viz id="binom-many" die="6" n="2" precompute="40"></binom-viz>
+    
     <p>Comparing the bars, we see that rolling a 7 is six times more
-      likely than rolling a 2. Shocking, we know.</p>
-    
-    <binom-viz id="binom-many" die="6" n="2" cumulative></binom-viz>
-    <input type="range" min="1" value="2" max="30" step="1"
-	   oninput="document.querySelector('#binom-many').n = this.value"/>
+      likely than rolling a 2. Shocking, I know. The more dice we add,
+      the more the distribution concentrates in the middle. Move this
+      slider: <input type="range" min="1" value="2" max="40" step="1"
+      oninput="$('#binom-many-c2').textContent =
+      $('#binom-many-c1').textContent = $('#binom-many').n =
+      this.value"/> to change the distribution above
+      to <span id="binom-many-c2">2</span>d6.</p>
 
+    <p>In many cases, though, we are not interested in whether we get
+      an 11 or a 17 on a d20. We just want to know if we get any
+      result greater or equal than, say, 13. For these cases,
+      the <em>cumulative probabilities</em> (i.e. their sum) of the
+      outcomes from 13 to 20 is a more interesting quantity. Hover the
+      mouse on the chart below to visualize the cumulative
+      probabilities of <span id="binom-cum-c">2</span>d6.
+      <input type="range" min="1" value="2" max="40" step="1"
+      oninput="$('#binom-cum-c').textContent = $('#binom-cum').n =
+      this.value"/></p>
+
+    <binom-viz id="binom-cum" die="6" n="2" precompute="40"
+	       cumulative></binom-viz>
+    
+    <p>As you increased the number of dice, you noticed that the
+      probability of every single outcome gets increasingly smaller,
+      the bars getting increasingly thinner (hover the mouse again if
+      you're not convinced). Now imagine rolling billions of dice. The
+      bars get so thin as to nearly disappear, every single one of the
+      billion outcomes becoming so unlikely that observing it becomes
+      hopeless. However the cumulative probabilities still go from 0%
+      to 100% and we can put a number on the probability of getting an
+      outcome greater than, say, 1,000,000,001.</p>
+
+    <p>Now make one more small effort and imagine rolling infinitely
+      many dice! The probability of observing any single outcome
+      becomes exactly 0. Nil. Nothing. But the probability of getting
+      an outcome
+      <math><mrow><mo>≥</mo></mrow><mrow><mi>n</mi></mrow></math>
+      corresponds to the ratio between the area of the chart to the
+      right of <math><mi>n</mi></math> and the area of the whole
+      chart. And this quantity is measurable! This is what
+      a <em>continuous probability distribution</em> is: a
+      mathematical function describing the probability of getting,
+      among infinitely many outcomes, one that is greater
+      than <math><mi>n</mi></math>.  The <em>standard normal
+      distribution</em> is one such distribution.  Its probability
+      chart (actually called <em>probability density function</em>) is
+      shown below. Hover the mouse to observe the cumulative
+      probabilities.</p>
+
+    <norm-viz mouse-events></norm-viz>
+
+    <p>The normal distribution is also called <em>gaussian
+	distribution</em> in honor of German
+      mathematician
+      <a href="https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss"
+	 target="_blank">Carl Friedrich Gauß</a>. Its probability
+      density function is defined mathematically as</p>
+
+    <math display="block">
+      <mrow>
+	<mi>φ</mi>
+	<mo form="prefix" stretchy="false">(</mo>
+	<mi>x</mi>
+	<mo form="postfix" stretchy="false">)</mo>
+	<mo>=</mo>
+	<mfrac>
+	  <msup>
+            <mi>e</mi>
+            <mrow>
+              <mo form="prefix" stretchy="false" lspace="0em" rspace="0em">−</mo>
+              <msup>
+		<mi>x</mi>
+		<mn>2</mn>
+              </msup>
+              <mi>/</mi>
+              <mn>2</mn>
+            </mrow>
+	  </msup>
+	  <msqrt>
+            <mrow>
+              <mn>2</mn>
+              <mi>π</mi>
+            </mrow>
+	  </msqrt>
+	</mfrac>
+	<mi>.</mi>
+      </mrow>
+    </math>
+
+    <p>Don't worry, you don't have to remember this! It is just to
+      show where the name dφ comes from: φ is a letter commonly used
+      to write density functions of the normal distribution.</p>
+
+    <p>If the shape looks familiar, it's because it is
+      the <em>limit</em> distribution of
+      rolling <math><mi>n</mi></math> dice (and dividing the result
+      by <math><msqrt><mi>n</mi></msqrt></math>)
+      as <math><mi>n</mi></math> goes to infinity. It is often
+      observed in nature because the sum of many small random
+      independent contributions also tends to a normal
+      distribution. This is why it is perfect for modeling&hellip; the
+      probability of hitting a heavily armored orc with a sword imbued
+      of draconic magic!</p>
+
+    <p>A dφ is a "die" that rolls numbers according to the normal
+      distribution.</p>
     
     <h2 id="for-players">dφ for players</h2>
 
