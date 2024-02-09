@@ -69,6 +69,7 @@
       }
       h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
       li { margin-left: 1em; }
+      .nowrap { white-space: nowrap; }
       
       figure, binom-viz, norm-viz {
 	  display: block;
@@ -115,9 +116,9 @@
 	d20, the d100, or something else, cannot adequately express
 	the complexity of all the situations that arise in role
 	playing. The dφ, instead, is controlled by two
-	parameters, <em>power</em> and <em>unpredictability</em>, that
-	can be fine-tuned to achieve any desired level of
-	realism&hellip; or epicism!</li>
+	parameters, <em>power</em> and <em>uncertainity</em>, that can
+	be fine-tuned to achieve any desired level of realism&hellip;
+	or epicism!</li>
       <li><strong>Mathematically sound, yet simple.</strong> Would you
 	rather take a bonus die or a +3 modifier? Confused by the
 	various factors that influence a roll? dφ was designed by
@@ -151,9 +152,9 @@
       <li><strong>Fun!</strong> Yes, a die can be fun! As you read on
 	you will find the concept of <em>power</em> quite familiar,
 	it's indeed nearly the same as a modifier in the d20
-	system. <em>Unpredictability</em>, however, is a whole new
-	story that will add spice to your RPG sessions. Try it if you
-	don't believe it!</li>
+	system. <em>Uncertainity</em>, however, is a whole new story
+	that will add spice to your RPG sessions. Try it if you don't
+	believe it!</li>
     </ul>
 
     <p>Ok, where's the catch? Well, despite being the most common
@@ -316,7 +317,75 @@
       of draconic magic!</p>
 
     <p>A dφ is a "die" that rolls numbers according to the normal
-      distribution.</p>
+      distribution. You can try rolling one by clicking on this
+      button <button onclick="$('#dφ-roll').textContent =
+      '0.1344574…'">roll dφ</button>
+      Result: <span id="dφ-roll"></span></p>
+
+    <p>The sequence of digits goes on literally forever, but we need
+      to stop it at some point if we want to read and use the
+      result. The 16 or so decimal digits output by our dφ roller are
+      more than enough for all practical purposes.</p>
+
+    <p>Let's review some important properties of the normal
+      distribution. First, it's pretty obvious that the curve is
+      symmetric with respect to the <math><mi>y</mi></math>-axis, thus
+      the results will come negative 50% of the time and positive the
+      other 50%. There is no lower or upper limit on the distribution:
+      <strong>any outcome between minus infinity and plus infinity is
+	possible</strong>; however the probability of observing a
+	result far away from 0 decreases exponentially fast. Indeed,
+	roughly 68.3% of the outcomes are comprised between -1 and 1,
+	and roughly 99.7% are comprised between -3 and 3. The chances
+	of falling outside the interval from -4 to 4 are smaller than
+	1 in 10,000: you may safely assume you'll not roll such a
+	result in a game session, but if you play enough, you
+	eventually will! Play with this slider to see the
+	probabilities of falling within various
+	intervals: <input type="range" min="0" value="1" max="3"
+	step="0.1" oninput="$('#norm-interval').left =
+	-($('#norm-interval').right = this.value)"></p>
+
+    <norm-viz id="norm-interval" left="-1" right="1"></norm-viz>
+
+    <p>There standard normal distribution is only one among
+      many. Indeed we can take the result of a normal distribution and
+      multiply and add arbitrary constants to it to get
+      a <em>generalized normal distributions</em>. For example, we
+      write <span class="nowrap">3dφ + 4</span> for the result of
+      rolling a dφ, multiplying the result by 3 and adding 4. The
+      outcome follows a normal distribution of
+      parameters <math><mrow><mo form="prefix"
+      stretchy="false">(</mo><mn>3,4</mn><mo form="postfix"
+      stretchy="false">)</mo></mrow></math>. <strong>Careful!</strong>
+      3dφ does not mean "roll three dφ and add the results". It really
+      means "multiply the result by 3". In general, we will take any
+      numbers σ and μ, not necessarily integers, and
+      roll <span class="nowrap">σdφ + μ</span>. We call μ
+      the <strong>power</strong> modifier and σ
+      the <strong>uncertainity</strong> modifier (mathematicians lack
+      imagination and call μ the <em>mean</em> and σ the <em>standard
+	deviation</em>).<p>
+
+    <p>Changing σ and μ does not really change the shape of the
+      probability density curve, it only squishes and stretches it
+      along the axes. In our visualizations, instead of squishing the
+      curve, we prefer to squish the axes. You can play around with
+      the distribution of <span class="nowrap">σdφ + μ</span> in the
+      chart below by modifying
+      <input type="range" min="-1" value="0" max="1"
+	     step="any" oninput="$('#σ').textContent = ($('#gen-norm').σ = 9**this.value).toFixed(2)">
+      <math><mrow><mi>σ</mi><mo>=</mo><mn id="σ">1.00</mn></mrow></math>
+      and
+      <input type="range" min="-5" value="0" max="5"
+	     step=".1" oninput="$('#μ').textContent = $('#gen-norm').μ = this.value">
+      <math><mrow><mi>μ</mi><mo>=</mo><mn id="μ">0</mn></mrow></math>.</p>
+    <p>You can roll this distribution by
+      <button onclick="$('#gen-norm-roll').textContent =
+      $('#gen-norm').roll()">clicking here!</button>,
+      result: <span id="gen-norm-roll"></span></p>
+    
+    <norm-viz id="gen-norm" mouse-events></norm-viz>
     
     <h2 id="for-players">dφ for players</h2>
 
@@ -324,12 +393,30 @@
 
     <h2 id="for-scientists">dφ for scientists</h2>
 
+    <h2 id="phaq">φAQ</h2>
+
+    <h3 id="i-want-dice">I want to roll dice! Is there a way to
+      simulate dφ with normal dice?</h3>
+
+    <h3 id="i-want-a-real-dφ">Where do I find a true dφ?</h3>
+
+    <h3 id="varphi-vs-phi">Is it φ or ϕ or ø or &empty; or Φ?</h3>
+
+    <p>φ, obviously.</p>
+    
+    <p>Codepoint <code>&amp;#x03C6;</code>
+      aka <code>&amp;phi;</code>. Some bad fonts render φ as ϕ, but
+      that's a grave mistake.</p>
+
+    <p>And definitely not the capital Phi letter Φ or the Scandinavian
+      letter ø or the empty set symbol &empty;. </p>
+      
     <h2 id="dnd5e">Using dφ in D&amp;D 5e</h2>
 
     <h2 id="white-wolf">Using dφ in White Wolf games</h2>
 
     <h2 id="chaosium">Using dφ in Chaosium games</h2>
-    
+
     <!--norm-viz mouse-events></norm-viz>
     <input type="range" min="-4" value="0" max="4" step="any"
 	   oninput="document.querySelector('norm-viz').σ = Math.pow(2, this.value)"/>
