@@ -50,7 +50,7 @@
 	  font-family: Fira Sans;
 	  font-size: 18px;
 	  --density-color: #5f5;
-	  --density-highlight: #f55;
+	  --density-shaded: color-mix(in srgb, var(--density-color), #fff 60%);
 	  --axis-color: #aaa;
 	  --axis-width: 0.5;
 	  --chart-font: 18px Fira Sans;
@@ -70,13 +70,45 @@
       h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
       li { margin-left: 1em; }
       .nowrap { white-space: nowrap; }
+      .animated {
+	  display: inline-block;
+	  font-weight: bold;
+	  color: white;
+	  background-color: #00f;
+	  padding: 2px;
+      }
+      .centered {
+	  text-align: center;
+	  margin: auto;
+      }
+
+      .checkbutton input {
+	  display: none;
+      }
+      .checkbutton input + * {
+	  border: solid thin #aaa;
+	  border-radius: 2px;
+	  padding: 0.5ex 1ex;
+	  cursor: pointer;
+	  user-select: none;
+	  color: #aaa;
+      }
+      .checkbutton input:checked + * {
+	  color: black;
+	  border-color: black;
+	  background-color: #eee;
+      }
+      .checklabel {
+	  cursor: pointer;
+	  text-decoration: underline;
+      }
       
-      figure, binom-viz, norm-viz, math[display="block"] {
+      figure, binom-viz.figure, norm-viz.figure, math[display="block"] {
 	  margin: 1ex auto;
 	  width: 500px;
 	  max-width: 100%;
       }
-      figure, binom-viz, norm-viz {
+      binom-viz, norm-viz {
 	  display: block;
       }
     </style>
@@ -206,37 +238,50 @@
       example, here's the chart for the uniform distribution on 6
       elements.</p>
 
-    <binom-viz die="6" n="1"></binom-viz>
+    <binom-viz class="figure" die="6" n="1"></binom-viz>
     
     <p>Here's a less boring chart showing the probability distribution
-      of rolling <span id="binom-many-c1">2</span>d6 (hover the mouse
-      on the bars to read the probabilities).</p>
-    
-    <binom-viz id="binom-many" die="6" n="2" precompute="40"></binom-viz>
+      of rolling 2d6 (hover the mouse on the bars to read the
+      probabilities).</p>
+
+    <figure>
+      <binom-viz id="binom-many" die="6" n="2" precompute="40"></binom-viz>
+      <div style="display: flex; justify-content: space-around">
+	<span>
+	  <input type="range" min="1" value="2" max="40" step="1"
+		 oninput="$('#binom-many-c').textContent = $('#binom-many').n = this.value"/>
+	  <span class="animated centered" style="width: 2.5em;">
+	    <span id="binom-many-c">2</span>d6
+	  </span>
+	</span>
+	<label class="checkbutton">
+	  <input type="checkbox" id="binom-cumulative"
+		 onchange="$('#binom-many').cumulative = this.checked;">
+	  <span>Cumulative</span>
+	</label>
+      </div>
+    </figure>
     
     <p>Comparing the bars, we see that rolling a 7 is six times more
       likely than rolling a 2. Shocking, I know. The more dice we add,
-      the more the distribution concentrates in the middle. Move this
-      slider: <input type="range" min="1" value="2" max="40" step="1"
-      oninput="$('#binom-many-c2').textContent =
-      $('#binom-many-c1').textContent = $('#binom-many').n =
-      this.value"/> to change the distribution above
-      to <span id="binom-many-c2">2</span>d6.</p>
+      the more the distribution concentrates in the middle. Move the
+      slider above to see what happens when you roll more dice.</p>
 
-    <p>In many cases, though, we are not interested in whether we get
-      an 11 or a 17 on a d20. We just want to know if we get any
-      result greater or equal than, say, 13. For these cases,
-      the <em>cumulative probabilities</em> (i.e. their sum) of the
-      outcomes from 13 to 20 is a more interesting quantity. Hover the
-      mouse on the chart below to visualize the cumulative
-      probabilities of <span id="binom-cum-c">2</span>d6.
-      <input type="range" min="1" value="2" max="40" step="1"
-      oninput="$('#binom-cum-c').textContent = $('#binom-cum').n =
-      this.value"/></p>
+    <p>When you roll an ability check, though, you don't really care
+      about the exact number you roll. You just want to know whether
+      you exceed a certain target. For example, if you're rolling a
+      d20 against a difficulty class of 13, you care about the
+      probability of getting 13 or more. In this case, we want to look
+      at the sum of the probabilities of getting 13, 14, &hellip;,
+      20. Click on the <label class="checklabel"
+      for="binom-cumulative">"Cumulative"</label> button and hover the
+      mouse again to show the <em>cumulative probabilities</em>,
+      i.e. the probability of getting <math><mi>n</mi></math> or
+      more. In either case, there is an easy visual interpretation of
+      these probabilities: it is the ratio between the area colored in
+      bright green and the whole area (both in bright and in pale
+      green).</p>
 
-    <binom-viz id="binom-cum" die="6" n="2" precompute="40"
-	       cumulative></binom-viz>
-    
     <p>As you increased the number of dice, you noticed that the
       probability of every single outcome gets increasingly smaller,
       the bars getting increasingly thinner (hover the mouse again if
@@ -247,10 +292,9 @@
       to 100% and we can put a number on the probability of getting an
       outcome greater than, say, 1,000,000,001.</p>
 
-    <p>Now make one more small effort and imagine rolling infinitely
-      many dice! The probability of observing any single outcome
-      becomes exactly 0. Nil. Nothing. But the probability of getting
-      an outcome
+    <p>Now imagine rolling infinitely many dice! The probability of
+      observing any single outcome becomes exactly
+      0. Nil. Nothing. But the probability of getting an outcome
       <math><mrow><mo>≥</mo></mrow><mrow><mi>n</mi></mrow></math>
       corresponds to the ratio between the area of the chart to the
       right of <math><mi>n</mi></math> and the area of the whole
@@ -260,8 +304,7 @@
       among infinitely many outcomes, one that is greater
       than <math><mi>n</mi></math>.  The <em>standard normal
       distribution</em> is one such distribution.  Its probability
-      chart (actually called <em>probability density function</em>) is
-      shown below. Hover the mouse to observe the cumulative
+      chart is shown below. Hover the mouse to observe the cumulative
       probabilities.</p>
 
     <norm-viz mouse-events></norm-viz>
@@ -271,7 +314,8 @@
       mathematician
       <a href="https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss"
 	 target="_blank">Carl Friedrich Gauß</a>. Its probability
-      density function is defined mathematically as</p>
+	 function (the curve that bounds the green area) is defined
+	 mathematically as</p>
 
     <math display="block">
       <mrow>
@@ -306,7 +350,8 @@
 
     <p>Don't worry, you don't have to remember this! It is just to
       show where the name dφ comes from: φ is a letter commonly used
-      to write density functions of the normal distribution.</p>
+      to denote the probability function of the normal
+      distribution.</p>
 
     <p>If the shape looks familiar, it's because it is
       the <em>limit</em> distribution of
@@ -318,17 +363,6 @@
       distribution. This is why it is perfect for modeling&hellip; the
       probability of hitting a heavily armored orc with a sword imbued
       of draconic magic!</p>
-
-    <p>A dφ is a "die" that rolls numbers according to the normal
-      distribution. You can try rolling one by clicking on this
-      button <button onclick="$('#dφ-roll').textContent =
-      Normal.sample() + '…'">roll dφ</button>
-      Result: <span id="dφ-roll"></span></p>
-
-    <p>The sequence of digits goes on literally forever, but we need
-      to stop it at some point if we want to read and use the
-      result. The 16 or so decimal digits output by our dφ roller are
-      more than enough for all practical purposes.</p>
 
     <p>Let's review some important properties of the normal
       distribution. First, it's pretty obvious that the curve is
@@ -350,6 +384,17 @@
 
     <norm-viz id="norm-interval" left="-1" right="1"></norm-viz>
 
+    <p>A dφ is a "die" that rolls numbers according to the normal
+      distribution. You can try rolling one by clicking on this
+      button <button onclick="$('#dφ-roll').textContent =
+      Normal.sample() + '…'">roll dφ</button>
+      Result: <span id="dφ-roll"></span></p>
+
+    <p>The sequence of digits goes on literally forever, but we need
+      to stop it at some point if we want to read and use the
+      result. The 16 or so decimal digits output by our dφ roller are
+      more than enough for all practical purposes.</p>
+
     <p>Like with standard dice, we may take the result of a dφ and add
       a modifier. So rolling a dφ + 4 means rolling a dφ and adding 4.
       But we will also do something a bit more unusual: multiply the
@@ -367,14 +412,14 @@
       <math><mrow><mo form="prefix"
       stretchy="false">(</mo><mn>σ,μ</mn><mo form="postfix"
       stretchy="false">)</mo></mrow></math>.  Varying σ and μ does not
-      really change the shape of the probability density curve, it
-      only squishes, stretches and shifts it along the axes. In our
+      really change the shape of the probability curve, it only
+      squishes, stretches and shifts it along the axes. In our
       visualizations, instead of squishing/stretching/shifting the
       curve we prefer to stretch/squish/shift the axes. You can play
       around with the distribution of <span class="nowrap">σdφ +
       μ</span> in the chart below by modifying
       <input type="range" min="-1" value="0" max="1"
-	     step="any" oninput="$('#σ').textContent = ($('#gen-norm').σ = 9**this.value).toFixed(2)">
+	     step="0.02" oninput="$('#σ').textContent = ($('#gen-norm').σ = 9**this.value).toFixed(2)">
       <math><mrow><mi>σ</mi><mo>=</mo><mn id="σ">1.00</mn></mrow></math>
       and
       <input type="range" min="-5" value="0" max="5"
@@ -495,7 +540,7 @@
 
     <p>The scientific heritage of dφ is apparent in its use of Greek
       letters. φ (<em>phi</em>, pronounced <em>fy</em>
-      or <em>fee</em>) is often used to denote the probability density
+      or <em>fee</em>) is often used to denote the probability
       function of the normal distribution, hence the name dφ to
       suggest a die that rolls according to it.</p>
 

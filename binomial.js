@@ -23,9 +23,12 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
   svg rect {
     fill: var(--density-color);
   }
-  svg rect:hover,
+  svg:hover rect {
+    fill: var(--density-shaded);
+  }
+  svg:hover rect:hover,
   .cumulative rect:hover ~ rect {
-    fill: var(--density-highlight);
+    fill: var(--density-color);
   }
   svg text {
     text-anchor: middle;
@@ -118,12 +121,12 @@ customElements.define("binom-viz", class BinomViz extends HTMLElement {
 	return this.hasAttribute('cumulative');
     }
     set cumulative(val) {
-	if (val !== false) {
-	    this.setAttribute('cumulative', '');
-	    this.figure.classList.add('cumulative');
-	} else {
+	if (val === false || val === null) {
 	    this.removeAttribute('cumulative');
 	    this.figure.classList.remove('cumulative');
+	} else {
+	    this.setAttribute('cumulative', '');
+	    this.figure.classList.add('cumulative');
 	}
     }
     
