@@ -72,10 +72,12 @@
       .nowrap { white-space: nowrap; }
       
       figure, binom-viz, norm-viz, math[display="block"] {
-	  display: block;
 	  margin: 1ex auto;
 	  width: 500px;
 	  max-width: 100%;
+      }
+      figure, binom-viz, norm-viz {
+	  display: block;
       }
     </style>
     <script src="rollφ.js"></script>
@@ -396,64 +398,70 @@
 
     <math display="block">
       <mrow>
-	<mo form="prefix" fence="true">(</mo>
-	<msub>
-	  <mi>σ</mi>
-	  <mn>1</mn>
-	</msub>
-	<mi mathvariant="normal">dφ</mi>
+	<mrow>
+	  <mo form="prefix" fence="true">(</mo>
+	  <msub>
+	    <mi>σ</mi>
+	    <mn>1</mn>
+	  </msub>
+	  <mi mathvariant="normal">dφ</mi>
+	  <mo>+</mo>
+	  <msub>
+	    <mi>μ</mi>
+	    <mn>1</mn>
+	  </msub>
+	  <mo form="postfix" fence="true">)</mo>
+	</mrow>
 	<mo>+</mo>
-	<msub>
-	  <mi>μ</mi>
-	  <mn>1</mn>
-	</msub>
-	<mo form="postfix" fence="true">)</mo>
-	<mo>+</mo>
-	<mo form="prefix" fence="true">(</mo>
-	<msub>
-	  <mi>σ</mi>
-	  <mn>2</mn>
-	</msub>
-	<mi mathvariant="normal">dφ</mi>
-	<mo>+</mo>
-	<msub>
-	  <mi>μ</mi>
-	  <mn>2</mn>
-	</msub>
-	<mo form="postfix" fence="true">)</mo>
-	<mo linebreak='goodbreak' linebreakstyle="after">=</mo>
+	<mrow>
+	  <mo form="prefix" fence="true">(</mo>
+	  <msub>
+	    <mi>σ</mi>
+	    <mn>2</mn>
+	  </msub>
+	  <mi mathvariant="normal">dφ</mi>
+	  <mo>+</mo>
+	  <msub>
+	    <mi>μ</mi>
+	    <mn>2</mn>
+	  </msub>
+	  <mo form="postfix" fence="true">)</mo>
+	</mrow>
+	<mo>=</mo>
+      </mrow>
+      <mrow>
 	<mrow>
 	  <mo fence="true" form="prefix">(</mo>
 	  <msqrt>
-            <mrow>
-              <msubsup>
-		<mi>σ</mi>
-		<mn>1</mn>
-		<mn>2</mn>
-              </msubsup>
-              <mo>+</mo>
-              <msubsup>
-		<mi>σ</mi>
-		<mn>2</mn>
-		<mn>2</mn>
-              </msubsup>
-            </mrow>
+            <msubsup>
+	      <mi>σ</mi>
+	      <mn>1</mn>
+	      <mn>2</mn>
+            </msubsup>
+            <mo>+</mo>
+            <msubsup>
+	      <mi>σ</mi>
+	      <mn>2</mn>
+	      <mn>2</mn>
+            </msubsup>
 	  </msqrt>
 	  <mo fence="true" form="postfix">)</mo>
 	</mrow>
-	<mi mathvariant="normal">dφ</mi>
-	<mo>+</mo>
-	<mo form="prefix" fence="true">(</mo>
-	<msub>
-	  <mi>μ</mi>
-	  <mn>1</mn>
-	</msub>
-	<mo>+</mo>
-	<msub>
-	  <mi>μ</mi>
-	  <mn>2</mn>
-	</msub>
-	<mo form="postfix" fence="true">)</mo>
+	<mrow>
+	  <mi mathvariant="normal">dφ</mi>
+	  <mo>+</mo>
+	  <mo form="prefix" fence="true">(</mo>
+	  <msub>
+	    <mi>μ</mi>
+	    <mn>1</mn>
+	  </msub>
+	  <mo>+</mo>
+	  <msub>
+	    <mi>μ</mi>
+	    <mn>2</mn>
+	  </msub>
+	  <mo form="postfix" fence="true">)</mo>
+	</mrow>
       </mrow>
     </math>
 
