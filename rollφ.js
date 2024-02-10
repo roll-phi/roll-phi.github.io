@@ -43,8 +43,19 @@ const Normal = {
 	return x;
     },
     test : () => {
-	let x = Math.random();
+	const x = Math.random();
 	return x - Normal.cdf(Normal.probit(x));
+    },
+    // Uses the polar Box-Muller method:
+    // https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform#Polar_form
+    sample : () => {
+	let s, u, v;
+	do {
+	    u = 2*Math.random() - 1;
+	    v = 2*Math.random() - 1;
+	    s = u*u + v*v;
+	} while (s == 0 || s >= 1);
+	return u * Math.sqrt(-2 * Math.log(s) / s);
     }
 }
 
@@ -275,6 +286,12 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 
     get prob() {
 	return Normal.cdf(this.right) - Normal.cdf(this.left);
+    }
+
+    /* Roll dφ */
+
+    roll() {
+	return this.σ * Normal.sample() + this.μ;
     }
     
     /* Drawing */
