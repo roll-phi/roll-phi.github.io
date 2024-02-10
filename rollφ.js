@@ -177,7 +177,7 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
     }
     
     get height() {
-	return  this.clientHeight || (this.width / 1.5);
+	return  this.clientHeight || (this.width / 2);
     }
 
     get labelHeight() {
