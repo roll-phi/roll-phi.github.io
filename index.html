@@ -161,9 +161,9 @@
 	d20, the d100, or something else, cannot adequately express
 	the complexity of all the situations that arise in role
 	playing. The dφ, instead, is controlled by two
-	parameters, <em>might</em> and <em>uncertainity</em>, that can
-	be fine-tuned to achieve any desired level of realism&hellip;
-	or epicism!</li>
+	parameters, <em>might</em> and <em>swing</em>, that can be
+	fine-tuned to achieve any desired level of realism&hellip; or
+	epicism!</li>
       <li><strong>Mathematically sound, yet simple.</strong> Would you
 	rather take a bonus die or a +3 modifier? Confused by the
 	various factors that influence a roll? dφ was designed by
@@ -197,8 +197,8 @@
       <li><strong>Fun!</strong> Yes, a die can be fun! As you read on
 	you will find the concept of <em>might</em> quite familiar,
 	it's indeed nearly the same as a modifier in the d20
-	system. <em>Uncertainity</em>, however, is a whole new story
-	that will add spice to your RPG sessions. Try it if you don't
+	system. <em>Swing</em>, however, is a whole new story that
+	will add spice to your RPG sessions. Try it if you don't
 	believe it!</li>
     </ul>
 
@@ -417,7 +417,7 @@
       mean rolling a dφ, multiplying the result by 3 and then adding
       4.  In dφ parlance,
       <math><mrow><mi>σ</mi><mo>=</mo><mn>3</mn></mrow></math> is called the 
-      <strong>uncertainity</strong> of the roll, and 
+      <strong>swing</strong> of the roll, and
       <math><mrow><mi>μ</mi><mo>=</mo><mn>4</mn></mrow></math> is
       its <strong>might</strong>.  Both σ and μ can be non-integers.</p>
 
@@ -546,9 +546,107 @@
     <p>This is all the theory you need to know about the dφ.  Now you
       can jump into the real deal: applying dφ to combat, skill
       checks, etc.!</p>
-      
+
+    
     <h2 id="for-players">dφ for players</h2>
 
+    <p>dφ is not a complete game system, but rather a framework to
+      create your own.  It can be integrated into new or existing game
+      settings and adapts to many different role playing styles.
+      Kinda like the (in)famous d20 system, but more radical.</p>
+
+    <p>At the core of dφ is <em>the check</em>: a die roll that
+      decides whether or not an action attempted by one or more
+      playing characters succeeds. This encompasses several rolls from
+      other game systems: attack rolls, saving throws, skill checks,
+      opposed rolls, etc. In this guide we will use the name "check"
+      for all of them, to stress that they are, ultimately, the one
+      and same mechanic, but feel free to call them with more
+      descriptive names in your game sessions.</p>
+
+    <p>A check is in general resolved by rolling a dφ and checking
+      whether the outcome is positive or negative: positive means
+      success, negative means failure. A vanilla dφ without modifiers
+      has 50% chances of coming out negative and 50% positive, and
+      thus represents the typical undecided situation, the perfect
+      balance between two mighty opponents, the crossroads where
+      anything could happen.</p>
+
+    <p>To the dφ, you add your might, call it μ<sub>me</sub>. The
+      might depends on the action you're trying to undertake and is
+      computed by combining your character's statistics.  For example,
+      when you attack with a sword your might may be given by your
+      character's strength plus your character's level; when you're
+      trying to evade a trap your might may be your character's
+      agility plus half your character's wits.  There is no need to
+      stick to integer modifiers: a
+      <span class="nowrap">dφ + 1.5</span> is a perfectly normal
+      roll.</p>
+
+    <p>And then you subtract your opponent's might, say
+      μ<sub>them</sub>.  Again, the opponent's might depends on the
+      action.  If you're attacking with a sword, then the opponent's
+      might may be given by his armor's modifier plus his agility; if
+      you're trying to smash a door, its might will just be a number
+      that represents its sturdiness. In summary you roll</p>
+
+    <math display="block">
+      <mrow>
+	<mi mathvariant="normal">dφ</mi>
+	<mo>+</mo>
+	<msub>
+	  <mi>μ</mi>
+	  <mrow>
+            <mi mathvariant="normal">me</mi>
+	  </mrow>
+	</msub>
+	<mo>-</mo>
+	<msub>
+	  <mi>μ</mi>
+	  <mrow>
+            <mi mathvariant="normal">them</mi>
+	  </mrow>
+	</msub>
+      </mrow>
+    </math>
+      
+    <p>and succeed if you get a positive number, fail otherwise.</p>
+
+    <p>In many situations, gms prefer to keep the opponent's might
+      secret, to spice up the game. In this case you will roll a 
+      <span class="nowrap">dφ + μ<sub>me</sub></span> and succeed if
+      your result is greater than μ<sub>them</sub>, which your gm will
+      tell you. Chances are that after a couple of rolls you will have
+      a good idea of your opponent's might.</p>
+
+    <p>There is one more thing: the swing (σ, remember?). The swing
+      controls the flow of the game by making it more or less
+      predictable.  Suppose that your might is 1.5 and your opponent's
+      is 4, so that your check requires a <span class="nowrap">dφ -
+      2.5</span> roll.  Your chances of success are almost null: about
+      0.6%.  But if, instead, you were rolling
+      <span class="nowrap">7dφ - 2.5</span>, your chances would bump
+      up to 36%. You can play with the chart below to see how the
+      chances of success change when you change the swing.</p>
+      
+    <figure>
+      <norm-viz id="swing-35" μ="-2.5" left="0"></norm-viz>
+      <div class="caption">
+	<span>
+	  <input type="range" min="-1" value="0" max="1" step="0.02"
+		 oninput="$('#σ35').textContent = ($('#swing-35').σ = 7**this.value).toFixed(2)">
+	  <math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="σ35">1.00</mn></mrow></math>
+	  <math class="animated"><mrow><mi>μ</mi><mo>=</mo><mn>-2.5</mn></mrow></math>
+	</span>
+	<span>
+	  <button onclick="$('#swing-35-roll').textContent =
+			   $('#swing-35').roll() + '…'">Roll</button>
+	  <span id="swing-35-roll" style="display: inline-block;width: 20ex;"></span>
+	</span>
+      </div>
+    </figure>
+    
+    
     <h2 id="for-gms">dφ for gms and game designers</h2>
 
     <h2 id="for-scientists">dφ for scientists</h2>
@@ -573,8 +671,9 @@
       while μ (<em>mu</em>) is used to denote its <em>mean</em> (i.e.,
       its average or expectation).  When you roll σdφ + μ, you're
       rolling according to a normal distribution of standard deviation
-      σ and mean μ, whence the symbols we use for uncertainity and
-      might.</p>
+      σ and mean μ, whence the symbols we use for swing and might.</p>
+
+    <p>Σ is simply the capital version of σ.</p>
     
     <h3 id="varphi-vs-phi">Is it φ or ϕ or ø or &empty; or Φ?</h3>
 
