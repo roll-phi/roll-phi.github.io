@@ -116,10 +116,10 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	if (this.hasAttribute("mouse-events")) {
 	    const setRange = (x) => {
 		if (this.dragging) {
-		    this.left = this.c2p(Math.min(this.dragStart, x));
-		    this.right = this.c2p(Math.max(this.dragStart, x));
+		    this.left = this.scale(this.c2p(Math.min(this.dragStart, x)));
+		    this.right = this.scale(this.c2p(Math.max(this.dragStart, x)));
 		} else if (!this.dragLock) {
-		    this.left = this.c2p(x);
+		    this.left = this.scale(this.c2p(x));
 		}
 	    };
 	    
@@ -264,8 +264,6 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	val = parseFloat(val);
 	if (val === NaN)
 	    throw `Left must be a float, got ${val}`
-	if (val <= -this.maxX)
-	    val = -Infinity
 	this.setAttribute("left", val);
     }
 
@@ -277,15 +275,13 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	val = parseFloat(val);
 	if (val === NaN)
 	    throw `Right must be a float, got ${val}`
-	if (val >= this.maxX)
-	    val = Infinity
 	this.setAttribute("right", val);
     }
 
     /* Computed values */
 
     get prob() {
-	return Normal.cdf(this.right) - Normal.cdf(this.left);
+	return Normal.cdf(this.unscale(this.right)) - Normal.cdf(this.unscale(this.left));
     }
 
     /* Roll dφ */
@@ -380,8 +376,9 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	this.range.textBaseline = 'bottom';
 	this.range.textAlign = 'center';
 
-	if (this.left > -Infinity) {
-	    const x = this.p2c(this.left);
+	const left = this.unscale(this.left);
+	if (left > -this.maxX) {
+	    const x = this.p2c(left);
 	    this.range.fillRect(0, 0, x, this.height);
 	    this.range.beginPath()
 	    this.range.moveTo(x, 0);
@@ -390,12 +387,13 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	    
 	    this.range.save();
 	    this.range.fillStyle = this.getStyle('--target-line-color');
-	    this.range.fillText(this.scale(this.left).toFixed(3), x, this.height);
+	    this.range.fillText(this.left.toFixed(3), x, this.height);
 	    this.range.restore();
 	}
 
-	if (this.right < Infinity) {
-	    const x = this.p2c(this.right);
+	const right = this.unscale(this.right);
+	if (right < this.maxX) {
+	    const x = this.p2c(right);
 	    this.range.fillRect(x, 0, this.width - x, this.height);
 	    this.range.beginPath()
 	    this.range.moveTo(x, 0);
@@ -404,7 +402,7 @@ customElements.define("norm-viz", class NormViz extends HTMLElement {
 	    
 	    this.range.save();
 	    this.range.fillStyle = this.getStyle('--target-line-color');
-	    this.range.fillText(this.scale(this.right).toFixed(3), x, this.height);
+	    this.range.fillText(this.right.toFixed(3), x, this.height);
 	    this.range.restore();
 	}
 
