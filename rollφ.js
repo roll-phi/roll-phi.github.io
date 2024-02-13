@@ -56,7 +56,9 @@ const Normal = {
 	    s = u*u + v*v;
 	} while (s == 0 || s >= 1);
 	return u * Math.sqrt(-2 * Math.log(s) / s);
-    }
+    },
+    // The hop (ℏ), a logarithmic unit of standard deviation
+    hop : Math.SQRT2**0.1,
 }
 
 /**
