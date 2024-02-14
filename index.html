@@ -61,7 +61,7 @@
 	  --cumulative-mask-color: #fffa;
 	  --target-line-color: #000d;
       }
-
+      
       body {
 	  text-align: justify;
 	  max-width: 40em;
@@ -71,6 +71,17 @@
       h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
       li { margin-left: 1em; }
       .nowrap { white-space: nowrap; }
+      
+      aside {
+        font-style: italic;
+	border: solid thin #ccc;
+	padding: 1ex;
+	margin: 1ex 0;
+      }
+      aside.example > :first-child:before {
+	  content: "Example.";
+	  font-weight: bold;
+      }
       
       .caption {
 	  display: flex;
@@ -554,9 +565,10 @@
       <h2>dφ for players</h2>
 
       <p>dφ is not a complete game system, but rather a framework to
-	create your own.  It can be integrated into new or existing game
-	settings and adapts to many different role playing styles.
-	Kinda like the (in)famous d20 system, but more radical.</p>
+	create your own.  It can be integrated into new or existing
+	game settings and adapts to many different role playing
+	styles.  Think the (in)famous d20 system, but more
+	radical.</p>
 
       <p>At the core of dφ is <em>the check</em>: a die roll that
 	decides whether or not an action attempted by one or more
@@ -567,62 +579,75 @@
 	and same mechanic, but feel free to call them with more
 	descriptive names in your game sessions.</p>
 
-      <p>A check is in general resolved by rolling a dφ and checking
-	whether the outcome is positive or negative: positive means
-	success, negative means failure. A vanilla dφ without modifiers
-	has 50% chances of coming out negative and 50% positive, and
-	thus represents the typical undecided situation, the perfect
-	balance between two mighty opponents, the crossroads where
-	anything could happen.</p>
+      <p>A check is in general resolved by rolling a
+	<span class="nowrap">σdφ + μ</span> and checking whether the
+	outcome is positive or negative: positive means success,
+	negative means failure. The swing σ and the might μ of a check
+	depend on several factors, which we now review in order.</p>
 
-      <p>To the dφ, you add your might, call it μ<sub>me</sub>. The
-	might depends on the action you're trying to undertake and is
-	computed by combining your character's statistics.  For example,
-	when you attack with a sword your might may be given by your
-	character's strength plus your character's level; when you're
-	trying to evade a trap your might may be your character's
-	agility plus half your character's wits.  There is no need to
-	stick to integer modifiers: a
-	<span class="nowrap">dφ + 1.5</span> is a perfectly normal
-	roll.</p>
+      <h3 id="the-might">The might</h3>
 
-      <p>And then you subtract your opponent's might, say
-	μ<sub>them</sub>.  Again, the opponent's might depends on the
-	action.  If you're attacking with a sword, then the opponent's
-	might may be given by his armor's modifier plus his agility; if
-	you're trying to smash a door, its might will just be a number
-	that represents its sturdiness. In summary you roll</p>
+      <p>The might represents your character's aptitude (or
+	inaptitude) at the task. It is very similar to a modifier in
+	the d20 system: a positive might increases your chances of
+	success, a negative one decreases
+	them. When <math><mrow><mi>μ</mi><mo>=</mo><mn>0</mn></mrow></math>
+	the rool has 50% chances of coming out negative and 50%
+	positive: this represents the typical undecided situation, the
+	perfect balance between two mighty opponents, the crossroads
+	where anything could happen.</p>
 
-      <math display="block">
-	<mrow>
-	  <mi mathvariant="normal">dφ</mi>
-	  <mo>+</mo>
-	  <msub>
+      <p>The total might is the difference between your own might and
+	your opponents:
+
+	<math display="block">
+	  <mrow>
 	    <mi>μ</mi>
-	    <mrow>
-              <mi mathvariant="normal">me</mi>
-	    </mrow>
-	  </msub>
-	  <mo>-</mo>
-	  <msub>
-	    <mi>μ</mi>
-	    <mrow>
-              <mi mathvariant="normal">them</mi>
-	    </mrow>
-	  </msub>
-	</mrow>
-      </math>
+	    <mo>=</mo>
+	    <msub><mi>μ</mi><mi mathvariant="normal">you</mi></msub>
+	    <mo>-</mo>
+	    <msub><mi>μ</mi><mi mathvariant="normal">opponent</mi></msub>
+	    <mo separator="true">.</mo>
+	  </mrow>
+	</math>
+
+	Both modifers depend on the the action that's being undertaken
+	and are computed by combining the character's statistics.</p>
+
+      <aside class="example">
+	<p>
+	  Yaba the fighter attacks a royal guard with his
+	  sword. Yaba's might is given by his strength plus half his
+	  level, that is
+	  <math><mrow><mn>3</mn><mo>+</mo></mrow><mrow><mn>3</mn><mi>/</mi><mn>2</mn><mo>=</mo></mrow><mrow><mn>4.5</mn></mrow></math>. The
+	  guard's might is given by his armor's modifier plus half his
+	  agility, that is
+	  <math><mrow><mn>3</mn><mo>+</mo></mrow><mrow><mn>2</mn><mi>/</mi><mn>2</mn><mo>=</mo></mrow><mrow><mn>4</mn></mrow></math>.
+	  The total might of the roll is thus 
+	  <math><mrow><mn>4.5</mn><mo>-</mo></mrow><mrow><mn>4</mn><mo>=</mo></mrow><mrow><mn>0.5</mn></mrow></math>.</p>
+      </aside>
       
-      <p>and succeed if you get a positive number, fail otherwise.</p>
-
+      <aside class="example">
+	<p>
+	  Yuvash the gnome is walking in the forest when he steps into
+	  a hunter's trap. To avoid being trapped, he makes a check
+	  based on his agility plus half his wits, that
+	  is <math><mrow><mn>2</mn><mo>+</mo></mrow><mrow><mn>4</mn><mi>/</mi><mn>2</mn><mo>=</mo></mrow><mrow><mn>4</mn></mrow></math>.
+	  The trap has a might of 6, so the total might of the roll is
+	  <math><mrow><mn>4</mn><mo>-</mo></mrow><mrow><mn>6</mn><mo>=</mo></mrow><mrow><mo>-</mo><mn>2</mn></mrow></math>.
+	</p>
+      </aside>
+      
       <p>In many situations, gms prefer to keep the opponent's might
 	secret, to spice up the game. In this case you will roll a 
-	<span class="nowrap">dφ + μ<sub>me</sub></span> and succeed if
-	your result is greater than μ<sub>them</sub>, which your gm will
-	tell you. Chances are that after a couple of rolls you will have
-	a good idea of your opponent's might.</p>
+	<span class="nowrap">σdφ + μ<sub>you</sub></span> and succeed
+	if your result is greater than μ<sub>opponent</sub>, which
+	your gm will tell you. Chances are that after a couple of
+	rolls you will have a good idea of your opponent's might.</p>
 
-      <p>There is one more thing: the swing (σ, remember?). The swing
+      <h3 id="the-swing">The swing</h3>
+      
+      <p>The swing
 	controls the flow of the game by making it more or less
 	predictable.  Suppose that your might is 1.5 and your opponent's
 	is 4, so, according to what we just wrote, you would roll
@@ -788,7 +813,7 @@
 	    </mrow>
 	  </math>
 	  is the <strong>might</strong>, computed as the difference
-	  between your might and your opponents.</li>
+	  between your might and your opponent's.</li>
       </ul>
 
       <p>If you roll a positive number you win, if you roll negative
@@ -796,9 +821,11 @@
 	roller, or you should go buy a lottery ticket).</p>
 
       <p>Now that you know all the basics of the dφ, we can review the
-	most important rules that affect the might and the swing. Keep
-	in mind that most rules in dφ are optional, your gm will tell
-	you which ones to use.</p>
+	most important rules that affect the might and the swing.  A
+	much more detailed list of rules will be given in
+	the <a href="#for-gms">gm's guide</a>.  Keep in mind that most
+	rules in dφ are optional, your gm will tell you which ones to
+	use.</p>
     </section>
 
     <section id="for-gms">
