@@ -72,15 +72,21 @@
       li { margin-left: 1em; }
       .nowrap { white-space: nowrap; }
       
-      aside {
+      aside, details {
         font-style: italic;
 	border: solid thin #ccc;
 	padding: 1ex;
 	margin: 1ex 0;
       }
+      aside em, details em {
+	  font-style: normal;
+      }
       aside.example > :first-child:before {
-	  content: "Example.";
+	  content: "Example. ";
 	  font-weight: bold;
+      }
+      details:hover {
+	border-color: #888;
       }
       
       .caption {
@@ -616,9 +622,9 @@
 
       <aside class="example">
 	<p>
-	  Yaba the fighter attacks a royal guard with his
-	  sword. Yaba's might is given by his strength plus half his
-	  level, that is
+	  Yaba the tribesman attacks a royal guard with his
+	  club. Yaba's might is given by his strength plus half his
+	  character level, that is
 	  <math><mrow><mn>3</mn><mo>+</mo></mrow><mrow><mn>3</mn><mi>/</mi><mn>2</mn><mo>=</mo></mrow><mrow><mn>4.5</mn></mrow></math>. The
 	  guard's might is given by his armor's modifier plus half his
 	  agility, that is
@@ -629,8 +635,8 @@
       
       <aside class="example">
 	<p>
-	  Yuvash the gnome is walking in the forest when he steps into
-	  a hunter's trap. To avoid being trapped, he makes a check
+	  Yuvash the gnome is following a track in the forest when he
+	  steps into a trap. To avoid being trapped, he makes a check
 	  based on his agility plus half his wits, that
 	  is <math><mrow><mn>2</mn><mo>+</mo></mrow><mrow><mn>4</mn><mi>/</mi><mn>2</mn><mo>=</mo></mrow><mrow><mn>4</mn></mrow></math>.
 	  The trap has a might of 6, so the total might of the roll is
@@ -639,7 +645,7 @@
       </aside>
       
       <p>In many situations, gms prefer to keep the opponent's might
-	secret, to spice up the game. In this case you will roll a 
+	secret to spice up the game. In this case you will roll a
 	<span class="nowrap">σdφ + μ<sub>you</sub></span> and succeed
 	if your result is greater than μ<sub>opponent</sub>, which
 	your gm will tell you. Chances are that after a couple of
@@ -647,178 +653,304 @@
 
       <h3 id="the-swing">The swing</h3>
       
-      <p>The swing
-	controls the flow of the game by making it more or less
-	predictable.  Suppose that your might is 1.5 and your opponent's
-	is 4, so, according to what we just wrote, you would roll
-	<span class="nowrap">dφ - 2.5</span>.  Your chances of success
-	would almost be null: about 0.6%.  But if, instead, you were to
-	roll
-	<span class="nowrap">7dφ - 2.5</span>, your chances would bump
-	up to 36%. You can play with the chart below to see how the
-	chances of success change when you change the swing.</p>
-      
-      <figure>
-	<norm-viz id="swing-35" μ="-2.5" left="0"></norm-viz>
-	<div class="caption">
-	  <span>
-	    <input type="range" min="-1" value="0" max="1" step="0.02"
-		   oninput="$('#σ35').textContent = ($('#swing-35').σ = 7**this.value).toFixed(2)">
-	    <math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="σ35">1.00</mn></mrow></math>
-	    <math class="animated"><mrow><mi>μ</mi><mo>=</mo><mn>-2.5</mn></mrow></math>
-	  </span>
-	  <span>
-	    <button onclick="$('#swing-35-roll').textContent =
-		    $('#swing-35').roll() + '…'">Roll</button>
-	    <span id="swing-35-roll" style="display: inline-block;width: 20ex;"></span>
-	  </span>
-	</div>
-      </figure>
+      <p>The swing σ controls the flow of the game by making it more
+	or less predictable. A larger swing makes rolling larger
+	numbers more likely, and thus diminishes the impact of the
+	might.  A smaller swing makes the resolution of a check more
+	dependent on the might and less on randomness. In the
+	extremes, a zero swing makes checks a simple matter of
+	comparing mights, whereas an infinitely large swing makes
+	every check a coin toss.</p>
 
-      <p>The swing in dφ is determined by several factors.  The first
-	and most important is the <strong>base swing</strong>, written
-	Σ.  This is the base modifier applied to all rolls.  It is a
-	global parameter of the game, its role is to balance the
-	determinism of comparing mights with the randomness of throwing
-	dice: too small a Σ and the greater might wins always, too large
-	and every check becomes a coin flip.  The base swing must be
-	commensurate with the typical statistics of characters. For
-	example, when adapting dφ to a game based on the d20, a typical
-	value for Σ would be between 6 and 8.  The gm will communicate
-	the base swing at the start of the campaign, and you won't have
-	to think much about it.</p>
+      <p>The swing is the product of two components: the base swing Σ
+	and the swing modifier τ, thus</p>
+	
+      <math display="block">
+	<mrow>
+	  <mi>σ</mi>
+	  <mo>=</mo>
+	  <mi>Σ</mi>
+	  <mi>τ</mi>
+	  <mo separator="true">.</mo>
+	</mrow>
+      </math>
 
-      <p>To the base swing, you may apply several other modifiers.
-	These take the form of multipliers that increase or decrease
-	the base swing.  <strong>Swing modifiers</strong> typically do
-	not come from the statistics of the individual characters, but
-	rather from the situation. For example, if the characters are
-	fighting in the middle of an earthquake, the gm may decide
-	that all combat actions become more unpredictable because of
-	the unstable ground and multiply the base swing by ×1.5.</p>
+      <p>The <strong>base swing</strong> is a global parameter of the
+	game.  It is fixed by the system or by the gm at the start of
+	the campaign and never changes.  Its role is simply to set a
+	balance between the the typical statistics of characters and
+	the randomness of the dφ.  Smaller values make the game more
+	deterministic, larger values make it more unpredictable.</p>
+
+      <aside class="example">
+	<p>Continuing Yuvash' example, the gm has set the base swing
+	  to <span class="nowrap">Σ = 7</span>.  The roll's might was
+	  determined to be <math><mo>-</mo><mn>2</mn></math>, so
+	  Yuvash needs to roll 7dφ - 2 and hope to get a positive
+	  number.  Looking at the chart below, we say Yuvash has
+	  nearly 39% chances of escaping the trap. Play with the
+	  slider to see how different base swings would change Yuvash'
+	  chances.
+	</p>
+
+	<figure>
+	  <norm-viz id="swing-yuvash" σ="7" μ="-2" left="0"></norm-viz>
+	  <div class="caption">
+	    <span>
+	      <input type="range" min="4" value="7" max="10" step="0.1"
+		     oninput="$('#σ-yuvash').textContent = ($('#swing-yuvash').σ = this.value**1).toFixed(1)">
+	      <math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="σ-yuvash">7.0</mn></mrow></math>
+	      <math class="animated"><mrow><mi>μ</mi><mo>=</mo><mn>-2</mn></mrow></math>
+	    </span>
+	    <span>
+	      <button onclick="$('#swing-yuvash-roll').textContent =
+		      $('#swing-yuvash').roll() + '…'">Roll</button>
+	      <span id="swing-yuvash-roll" style="display: inline-block;width: 20ex;"></span>
+	    </span>
+	  </div>
+	</figure>
+      </aside>
+
+      <p>The value of the base swing must be commensurate with the
+	typical range of might modifiers, which themselves depend on
+	the character's statistics.  When adapting a game based on the
+	d20 to dφ, values of Σ between 6 and 8 give results close to
+	the original.  For a game based on the d100, values of Σ
+	between 30 and 40 would be typical.</p>
+
+      <p>The <strong>swing modifier(s)</strong> increase or decrease
+	the base swing by a multiplicative factor. If the base swing
+	is 7 and the swing modier is 2, the total swing will be 14.
+	Swing modifiers typically do not come from the statistics of
+	the individual characters, but rather from the situation. For
+	example, if the characters are fighting in the middle of an
+	earthquake, the gm may decide that all combat actions become
+	more unpredictable because of the unstable ground and multiply
+	the base swing by ×1.5.  When several swing modifiers apply at
+	once, they are all multiplied together.</p>
 
       <p>It is difficult to do mental calculations with swing
-	modifiers when they are expressed as plain numbers: how fast
-	can you multiply
-	<math><mrow><mi>Σ</mi><mo>=</mo><mi>7</mi></mrow></math> by
-	1.25 by 1.02 by 0.80 in your head? For this reason, dφ
-	expresses most swing multipliers using a <em>logarithmic
-	scale</em> whose unit is the <strong>hop</strong>, for which
-	we use the symbol ℏ.  The advantage of using hops is that they
-	add instead of multiplying: if one condition changes the swing
-	by 2ℏ and another one changes it by -5ℏ, both conditions
-	together change it by -3ℏ. A positive number of hops increases
-	the swing, a negative number decreases it, and 0ℏ leave it
-	unchanged. Play with the chart below to see how hops change
-	the swing (the chart has a base swing of 1, for
-	simplicity).</p>
+	modifiers: how fast can you multiply 7 × 1.25 × 1.02 × 0.80 in
+	your head? Did you even realize that 1.25 and 0.80 cancel each
+	other out?  For this reason, dφ uses instead
+	the <strong>hop</strong>, a <emph>logarithmic unit</emph>, to
+	measure swing modifiers.  The symbol of the hop is ℏ.  Zero
+	hops correspond to no modifier
+	(i.e. <math><mrow><mi>τ</mi><mo>=</mo><mn>1</mn></mrow></math>),
+	a negative number of hops decreases σ
+	(i.e. <math><mrow><mi>τ</mi><mo>&lt;</mo><mn>1</mn></mrow></math>),
+	a positive number increases it
+	(i.e. <math><mrow><mi>τ</mi><mo>&gt;</mo><mn>1</mn></mrow></math>).
+	Being a logarithmic unit, hops add instead of multiplying, so
+	applying a modifier of -3ℏ followed by one of 3ℏ totals to 0ℏ,
+	so no modifier at all.  Play with the chart below to visualize
+	the impact of swing modifiers.</p>
 
       <figure>
-	<norm-viz id="norm-hops" mouse-events></norm-viz>
+	<norm-viz id="norm-hops" σ="8" left="0"></norm-viz>
 	<div class="caption">
-	  <span class="animated">hops = 
-	    <math><mrow><mn id="hops">0</mn><mi>ℏ</mi></mrow></math>
+	  <span>
+	    <math class="animated"><mrow><mi>Σ</mi><mo>=</mo><mn>8</mn></mrow></math>
+	    <input type="range" min="-40" value="0" max="40" step="1"
+		   oninput="$('#norm-hops').σ = 8*Normal.hop**($('#hops').textContent = this.value)">
+	    <math class="animated"><mrow><mi mathvariant="normal">hops</mi><mo>=</mo><mn id="hops">0</mn><mi>ℏ</mi></mrow></math>
+	    <!--math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="hops-σ">1.000</mn><mi>Σ</mi></mrow></math-->
 	  </span>
-	  <input type="range" min="-40" value="0" max="40" step="1"
-		 oninput="$('#hops-σ').textContent = ($('#norm-hops').σ = Normal.hop**($('#hops').textContent = this.value)).toFixed(3)">
-	  <math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="hops-σ">1.000</mn><mi>Σ</mi></mrow></math>
+	  <span>
+	    <input type="range" min="-10" value="0" max="10" step=".1"
+		   oninput="$('#μ-hops').textContent = ($('#norm-hops').μ = 1*this.value).toFixed(1)">
+	    <math class="animated"><mrow><mi>μ</mi><mo>=</mo><mn id="μ-hops">0.0</mn></mrow></math>
+	  </span>
+	  <span>
+	    <button onclick="$('#norm-hops-roll').textContent =
+		    $('#norm-hops').roll() + '…'">Roll</button>
+	    <span id="norm-hops-roll" style="display: inline-block;width: 20ex;"></span>
+	  </span>
 	</div>
       </figure>
 
-      <p>You don't need to remember how hops are translated to
-	multipliers: the charts will help you visualize their effect
-	on the swing. If you really want to know, however, one hop is
-	defined as
+      <p>It is not important to know the exact value of one hop, the
+	visual tools in dφ will help you translate hops to numbers.
+	It's probably good to remember that 20ℏ correspond to to
+	multiplying by 2. Careful, though: 1ℏ does not correspond to
+	multiplying by 0.1!  If you want the hard math facts, read the
+	box below.</p>
 
-	<math display="block">
-	  <mrow>
-	    <mn>1</mn>
-	    <mi>ℏ</mi>
-	    <mo>=</mo>
-	  </mrow>
-	  <mrow>
-	    <mroot><mn>2</mn><mn>20</mn></mroot>
-	    <mo>≈</mo>
-	  </mrow>
-	  <mn>1.0352649238413775&hellip;</mn>
-	</math>
-
-	and <math><mi>n</mi></math> hops translate to
+      <details>
+	<summary><strong>The hop</strong></summary>
 	
+	<p>The hop is a logarithmic unit defined so
+	  that
+	  <math><mrow><mn>10</mn><mi>ℏ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></mrow></math>.
+	  This means that:</p>
+
 	<math display="block">
-	  <mrow>
-	    <mi>n</mi>
-	    <mi>ℏ</mi>
-	    <mo>=</mo>
-	  </mrow>
-	  <mrow>
-	    <msup>
-	      <mn>2</mn>
-	      <mrow>
-		<mi>n</mi>
-		<mi>/</mi>
-		<mn>20</mn>
-	      </mrow>
-	    </msup>
-	  </mrow>
-	  <mo separator="true">,</mo>
-	</math>
-
-	so, in particular
-	<math><mrow><mn>10</mn><mi>ℏ</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></mrow></math>
-	and
-	<math><mrow><mn>20</mn><mi>ℏ</mi><mo>=</mo><mn>2</mn></mrow></math>.</p>
-
-      <p>In summary, any time you do a check, you roll
-	a <span class="nowrap">σdφ + μ</span>, where:</p>
-
-      <ul>
-	<li>σ is the <strong>swing</strong>, computed as
-	  <math>
-	    <mrow>
-	      <mi>σ</mi>
-	      <mo>=</mo>
-	    </mrow>
-	    <mrow>
-	      <msup>
+	  <mtable displaystyle="true" columnalign="right left">
+	    <mtr>
+	      <mtd class="tml-right" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mn>1</mn>
+		  <mi>ℏ</mi>
+		</mrow>
+	      </mtd>
+	      <mtd class="tml-left" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mo>≈</mo>
+		  <mn>1.0352649238413775…</mn>
+		</mrow>
+	      </mtd>
+	    </mtr>
+	    <mtr>
+	      <mtd class="tml-right" style="padding:0.7ex 0em 0.7ex 0em;">
 		<mrow>
 		  <mn>2</mn>
+		  <mi>ℏ</mi>
 		</mrow>
+	      </mtd>
+	      <mtd class="tml-left" style="padding:0.7ex 0em 0.7ex 0em;">
 		<mrow>
-		  <mi mathvariant="normal">hops</mi>
-		  <mi>/</mi>
-		  <mn>20</mn>
+		  <mo>=</mo>
+		  <mo form="prefix" stretchy="false">(</mo>
+		  <mn>1</mn>
+		  <mi>ℏ</mi>
+		  <msup>
+		    <mo form="postfix" stretchy="false">)</mo>
+		    <mn>2</mn>
+		  </msup>
+		  <mo>≈</mo>
+		  <mn>1.0717734625362932…</mn>
 		</mrow>
-	      </msup>
-	      <mo>×</mo>
-	    </mrow>
-	    <mrow>
-	      <mrow>
-		<mi>Σ</mi>
-	      </mrow>
-	    </mrow>
-	  </math>;</li>
-	<li>Σ is the <strong>base swing</strong>, a fixed parameter of
-	  the game;</li>
-	<li>"hops" is a <strong>swing modifier</strong>, measured
-	  in <strong>hops</strong>;</li>
-	<li>
-	  <math>
-	    <mrow>
-	      <mi>μ</mi>
-	      <mo>=</mo>
-	      <msub><mi>μ</mi><mi mathvariant="normal">me</mi></msub>
-	      <mo>-</mo>
-	      <msub><mi>μ</mi><mi mathvariant="normal">them</mi></msub>
-	    </mrow>
-	  </math>
-	  is the <strong>might</strong>, computed as the difference
-	  between your might and your opponent's.</li>
-      </ul>
+	      </mtd>
+	    </mtr>
+	    <mtr>
+	      <mtd class="tml-right" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mn>3</mn>
+		  <mi>ℏ</mi>
+		</mrow>
+	      </mtd>
+	      <mtd class="tml-left" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mo>=</mo>
+		  <mo form="prefix" stretchy="false">(</mo>
+		  <mn>1</mn>
+		  <mi>ℏ</mi>
+		  <msup>
+		    <mo form="postfix" stretchy="false">)</mo>
+		    <mn>3</mn>
+		  </msup>
+		  <mo>≈</mo>
+		  <mn>1.1095694720678450…</mn>
+		</mrow>
+	      </mtd>
+	    </mtr>
+	    <mtr>
+	      <mtd class="tml-right" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow></mrow>
+	      </mtd>
+	      <mtd class="tml-left" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mi>⋮</mi>
+		  <mspace width="0pt" height="14.944pt"></mspace>
+		</mrow>
+	      </mtd>
+	    </mtr>
+	    <mtr>
+	      <mtd class="tml-right" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mn>10</mn>
+		  <mi>ℏ</mi>
+		</mrow>
+	      </mtd>
+	      <mtd class="tml-left" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mo>=</mo>
+		  <mo form="prefix" stretchy="false">(</mo>
+		  <mn>1</mn>
+		  <mi>ℏ</mi>
+		  <msup>
+		    <mo form="postfix" stretchy="false">)</mo>
+		    <mn>10</mn>
+		  </msup>
+		  <mo>=</mo>
+		  <msqrt>
+		    <mn>2</mn>
+		  </msqrt>
+		  <mo>≈</mo>
+		  <mn>1.4142135623730950…</mn>
+		</mrow>
+	      </mtd>
+	    </mtr>
+	    <mtr>
+	      <mtd class="tml-right" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow></mrow>
+	      </mtd>
+	      <mtd class="tml-left" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mi>⋮</mi>
+		  <mspace width="0pt" height="14.944pt"></mspace>
+		</mrow>
+	      </mtd>
+	    </mtr>
+	    <mtr>
+	      <mtd class="tml-right" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mn>20</mn>
+		  <mi>ℏ</mi>
+		</mrow>
+	      </mtd>
+	      <mtd class="tml-left" style="padding:0.7ex 0em 0.7ex 0em;">
+		<mrow>
+		  <mo>=</mo>
+		  <mo form="prefix" stretchy="false">(</mo>
+		  <mn>1</mn>
+		  <mi>ℏ</mi>
+		  <msup>
+		    <mo form="postfix" stretchy="false">)</mo>
+		    <mn>20</mn>
+		  </msup>
+		  <mo>=</mo>
+		  <mn>2</mn>
+		</mrow>
+	      </mtd>
+	    </mtr>
+	  </mtable>
+	</math>
 
-      <p>If you roll a positive number you win, if you roll negative
-	you loose (and if you roll 0 either there is a bug in the die
-	roller, or you should go buy a lottery ticket).</p>
+	<p>The reason for this choice is that
+	  <math><msqrt><mn>2</mn></msqrt></math> is an important
+	  constant in dφ, and that a smaller subdivision was needed
+	  for finer grained control, so we took the tenth root of it.</p>
+      </details>
+
+      <aside class="example">
+	<p>The company of the gilded spur is fighting a dragon.
+	  Attacking with the Dragon slayer, her magical sword,
+	  Xihaia's benefits of a <strong>might</strong> equal to her
+	  strength plus half her agility plus half her level plus 2,
+	  for a total of <span class="nowrap">μ = 12</span>.  The
+	  dragon's scales are incredibly hard, though, and afford it
+	  a <strong>might</strong> of 25.  The <strong>base
+	  swing</strong> of the campaign is set
+	  to <span class="nowrap">Σ = 8</span>, so Xihaia would have
+	  to roll a <span class="nowrap">8dφ - 13</span> to hit the
+	  dragon&hellip; her chances of success are a mere 5%.</p>
+
+	<p>Luckily, Shintaku the sorceress launches the
+	  spell <em>chaos</em>: by twisting the fabric of reality
+	  itself, she bends the law of physics in an area surrounding
+	  the dragon, making every event more unpredictable. In game
+	  terms, for the duration of the spell every roll receives
+	  a <strong>swing modifier</strong> of 16ℏ (twice Shintaku's
+	  level).</p>
+
+	<p>Thanks to Shintaku's spell, Xihaia's roll becomes (roughly)
+	  <span class="nowrap">13.9dφ - 13</span>, which has 17.5%
+	  chances of coming out positive.  She rolls and obtains a
+	  3.67&hellip;, a success. The Dragon slayer lodges itself
+	  between the dragon's scales and inflicts a deep wound.  The
+	  dragon is very angry, now!</p>
+      </aside>
 
       <p>Now that you know all the basics of the dφ, we can review the
 	most important rules that affect the might and the swing.  A
