@@ -69,8 +69,9 @@
 	  padding: 10px 4px;
       }
       h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
-      li { margin-left: 1em; }
+      li { margin: 0.6ex 0 0.6ex 1em;  }
       .nowrap { white-space: nowrap; }
+      p { margin: 0.6ex auto; }
       
       aside, details {
         font-style: italic;
@@ -87,6 +88,9 @@
       }
       details:hover {
 	border-color: #888;
+      }
+      summary {
+	  cursor: pointer;
       }
       
       .caption {
@@ -720,7 +724,7 @@
 
       <p>The <strong>swing modifier(s)</strong> increase or decrease
 	the base swing by a multiplicative factor. If the base swing
-	is 7 and the swing modier is 2, the total swing will be 14.
+	is 7 and the swing modifier is 2, the total swing will be 14.
 	Swing modifiers typically do not come from the statistics of
 	the individual characters, but rather from the situation. For
 	example, if the characters are fighting in the middle of an
@@ -733,7 +737,7 @@
 	modifiers: how fast can you multiply 7 × 1.25 × 1.02 × 0.80 in
 	your head? Did you even realize that 1.25 and 0.80 cancel each
 	other out?  For this reason, dφ uses instead
-	the <strong>hop</strong>, a <emph>logarithmic unit</emph>, to
+	the <strong>hop</strong>, a <em>logarithmic unit</em>, to
 	measure swing modifiers.  The symbol of the hop is ℏ.  Zero
 	hops correspond to no modifier
 	(i.e. <math><mrow><mi>τ</mi><mo>=</mo><mn>1</mn></mrow></math>),
@@ -754,7 +758,6 @@
 	    <input type="range" min="-40" value="0" max="40" step="1"
 		   oninput="$('#norm-hops').σ = 8*Normal.hop**($('#hops').textContent = this.value)">
 	    <math class="animated"><mrow><mi mathvariant="normal">hops</mi><mo>=</mo><mn id="hops">0</mn><mi>ℏ</mi></mrow></math>
-	    <!--math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="hops-σ">1.000</mn><mi>Σ</mi></mrow></math-->
 	  </span>
 	  <span>
 	    <input type="range" min="-10" value="0" max="10" step=".1"
@@ -771,9 +774,9 @@
 
       <p>It is not important to know the exact value of one hop, the
 	visual tools in dφ will help you translate hops to numbers.
-	It's probably good to remember that 20ℏ correspond to to
+	It's probably good to remember that 20ℏ correspond to 
 	multiplying by 2. Careful, though: 1ℏ does not correspond to
-	multiplying by 0.1!  If you want the hard math facts, read the
+	multiplying by 0.1!  If you want the hard math facts, open the
 	box below.</p>
 
       <details>
@@ -924,7 +927,7 @@
       </details>
 
       <aside class="example">
-	<p>The company of the gilded spur is fighting a dragon.
+	<p>The Company of the Gilded Spur is fighting a dragon.
 	  Attacking with the Dragon slayer, her magical sword,
 	  Xihaia's benefits of a <strong>might</strong> equal to her
 	  strength plus half her agility plus half her level plus 2,
@@ -937,7 +940,7 @@
 	  dragon&hellip; her chances of success are a mere 5%.</p>
 
 	<p>Luckily, Shintaku the sorceress launches the
-	  spell <em>chaos</em>: by twisting the fabric of reality
+	  spell <em>Chaos</em>: by twisting the fabric of reality
 	  itself, she bends the law of physics in an area surrounding
 	  the dragon, making every event more unpredictable. In game
 	  terms, for the duration of the spell every roll receives
@@ -958,6 +961,88 @@
 	the <a href="#for-gms">gm's guide</a>.  Keep in mind that most
 	rules in dφ are optional, your gm will tell you which ones to
 	use.</p>
+
+
+      <h3 id="never-roll-twice">Never roll twice!</h3>
+
+      <p>One of the central tenets of dφ is that every situation can
+	be resolved by the roll of a single die.  Unlike in other
+	systems, you will never be asked to roll two dice and add
+	them, take the maximum or the minimum value.  You and your
+	opponent will also never be asked to roll a die each and
+	compare the results. The mechanic is always the same for every
+	situation: determine mights of the participants involved, take
+	their difference μ, determine the swing, and
+	roll <span class="nowrap">σdφ + μ</span>.  This mechanic is
+	symmetric, so it doesn't matter who rolls the die.  Some gms
+	like to have the players roll all dice (except secret rolls,
+	maybe).</p>
+
+      <aside class="example">
+	<p>The young Chevalier de Chançon (a PC) is fighting a duel
+	  with the Marquis de Fleurence (an NPC).  It is the
+	  Chevalier's turn and he prods the Marquis' defenses by
+	  thrusting his foil, the Marquis reads the attack and tries
+	  to deflect. Chançon's might is 5 (his <em>agility</em>
+	  plus <em>half his strength</em> plus
+	  his <em>swordmanship</em>), Fleurence's might is 10 (his
+	  <em>wits</em> plus <em>half his agility</em> plus
+	  his <em>swordmanship</em>), the base swing is
+	  8.  <strong>Chançon rolls <span class="nowrap">8dφ -
+	  5</span></strong> and gets -0.24&hellip;, his foil slashes
+	  the air.</p>
+
+	<p>The Marquis circles and ripostes aiming for Chançon's open
+	  chest, Chanson tries to disengage and parry.  Fleurence's
+	  might in this move is 8.5 (<em>agility</em> plus <em>half
+	  his strength</em> plus <em>swordmanship</em>) whereas
+	  Chançon's is 4 (<em>wits</em> plus <em>half his agility</em>
+	  plus <em>swordmanship</em>).  <strong>Chançon is the PC, so
+	  he rolls <span class="nowrap">8dφ - 4.5</span></strong> and
+	  gets -1.32&hellip; Fleurence's blow tears Chançon's shirt
+	  and scratches his chest.  The Marquis has drawn first blood,
+	  Chançon will have to practice more before he can challenge
+	  the Marquis again.</p>
+      </aside>
+	
+      <p>There are several exceptions to the single roll rule, though.
+	When one PC goes against another PC, the master may decide to
+	have each player make a roll and compare the results, for
+	increased drama.  In this case the swing of each roll is
+	adjusted by -10ℏ, so that the probability of either party
+	winning is exactly the same as if only one party had rolled.
+	Thus the choice of who rolls is only a matter of flavor,
+	without any impact on the mechanics.</p>
+
+      <aside class="example">
+	<p>The Chevalier de Chançon practices fencing with his friend
+	  the Vicomte d'Orval (another PC), who wants to teach him his
+	  famous <em>botte de Saint-Hilaire</em>. Orval feints to his
+	  right then draws the tip towards Chançon's belly.
+	  Surprised, Chançon tries to back down and parry.  Orval's
+	  might is 6 and Chanson's is 4.  <strong>Because both are
+	  playing characters</strong>, the gm instructs the players to
+	  roll a die each.  The base swing <span class="nowrap">Σ =
+	  8</span> is adjusted by -10ℏ and so becomes roughly
+	  <span class="nowrap">σ = 5.6569&hellip;</span>.
+	  <strong>Chançon rolls <span class="nowrap">σdφ +
+	      4</span></strong> and gets 6.42&hellip;;
+	  <strong>Orval rolls <span class="nowrap">σdφ +
+	      6</span></strong> and gets
+	      7.01&hellip;. <em>Touché!</em> Orval's rolls is higher,
+	      so his <em>botte</em> strikes on target.</p>
+      </aside>
+      
+      <p>The gm's guide has a much more detailed explanation of how
+	and why splitting and merging rolls affects the swing.  Of
+	course, all these computations will be done by the roll-φ app,
+	so it is not important to memorize the modifiers.  You just
+	need to remember that the number of PC and NPC involved in a
+	check may change the swing, but that ultimately the chances of
+	success will be independent of how many people roll a die.</p>
+
+
+      <h3 id="helping-pc">Helping and collaborating</h3>
     </section>
 
     <section id="for-gms">
