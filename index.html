@@ -92,7 +92,13 @@
       summary {
 	  cursor: pointer;
       }
-      
+
+      .optional:after {
+	  content: "  (optional)";
+	  color: #777;
+	  font-size: 70%;
+      }
+
       .caption {
 	  display: flex;
 	  flex-flow: row wrap;
@@ -982,7 +988,7 @@
 	<p>The young Chevalier de Chançon (a PC) is fighting a duel
 	  with the Marquis de Fleurence (an NPC).  It is the
 	  Chevalier's turn and he prods the Marquis' defenses by
-	  thrusting his foil, the Marquis reads the attack and tries
+	  thrusting his rapier, the Marquis reads the attack and tries
 	  to deflect. Chançon's might is 5 (his <em>agility</em>
 	  plus <em>half his strength</em> plus
 	  his <em>swordmanship</em>), Fleurence's might is 10 (his
@@ -1035,7 +1041,7 @@
       
       <p>The gm's guide has a much more detailed explanation of how
 	and why splitting and merging rolls affects the swing.  Of
-	course, all these computations will be done by the roll-φ app,
+	course, all these computations will be done by the Rollφ app,
 	so it is not important to memorize the modifiers.  You just
 	need to remember that the number of PC and NPC involved in a
 	check may change the swing, but that ultimately the chances of
@@ -1043,10 +1049,152 @@
 
 
       <h3 id="helping-pc">Helping and collaborating</h3>
+
+      <p>Following the same philosophy, any time several characters
+	work together towards a same goal their success can be
+	determined by a single die roll</p>
+
+      <h3 id="focus-pc" class="optional">Focus</h3>
     </section>
 
     <section id="for-gms">
       <h2>dφ for gms and game designers</h2>
+
+      <p>We now dive into the mechanics of dφ and how to use them to
+	deliver an entertaining gaming experience.  Most of the rules
+	we present here are optional and some of them do not even work
+	well together.  Your role as gm or game designer is to choose
+	the rules that fit best your campaign and your gaming style
+	and to integrate them into the larger game system.  Remember:
+	dφ is just a die!  It does not impose to you a setting, a list
+	of classes or archetypes, a system of experience and character
+	levels, hit points, weapons, characteristics, skills, powers,
+	spells, etc.  These are all yours to decide: you can integrate
+	dφ into a system you're already familiar with, or you can
+	build your own on top of it.</p>
+
+      <p>Although dφ strives to stay simple and intuitive, most of the
+	computations involved in determining a check's difficulty are
+	impossible to do mentally for almost any human.  The goal of
+	this guide is to give you a deep understanding of the
+	mechanics of dφ, but ultimately the Rollφ app will do the
+	computations for you.</p>
+      
+      <h3 id="">Choosing a base swing</h3>
+
+      <p>Remember that every check in dφ is resolved by
+	rolling <span class="nowrap">σdφ + μ</span>, where σ is the
+	<strong>swing</strong> and μ is the <strong>might</strong> of
+	the roll.  Barring swing modifiers, the swing is equal to the
+	<strong>base swing</strong> Σ, a global parameter that never
+	changes during the game or campaign.</p>
+      
+      <p>You want to have a certain balance between the base swing and
+	the might of a typical roll.  If the typical character has,
+	say, strength ranging from -4 to 4, a strength check will have
+	might going from -8 to 8.  Then,
+	setting <span class="nowrap">Σ = 100</span> would make any
+	check nearly unpredictable, whereas <span class="nowrap">Σ =
+	0.5</span> would make them extremely boring.  A value of Σ
+	between 6 and 10 would give here the most interesting results.
+	Play with the chart below to see how the choice of Σ impacts
+	the randomness of the checks.</p>
+
+      <figure>
+	<norm-viz id="base-swing" σ="10" μ="-8" left="0"></norm-viz>
+	<div class="caption">
+	  <span>
+	    <input type="range" min="0.3" value="1" max="2" step="0.1"
+		   oninput="$('#Σ').textContent = ($('#base-swing').σ = 10**this.value).toFixed(2)">
+	    <math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="Σ">10.00</mn></mrow></math>
+	  </span>
+	  <span>
+	    <input type="range" min="-8" value="-8" max="8" step="1"
+		   oninput="$('#μ-base').textContent = $('#base-swing').μ = this.value">
+	      <math class="animated"><mrow><mi>μ</mi><mo>=</mo><mn id="μ-base">-8</mn></mrow></math>
+	  </span>
+	</div>
+      </figure>
+
+      <p>You have two approaches to choose Σ. The first is when the
+	statistics of characters and objects are already decided, for
+	example if you're integrating dφ into a pre-existing game.  In
+	this case, choose the smallest might with which a character
+	may still hope to pass a check (e.g., <span class="nowrap">μ =
+	-10</span>), and set Σ so that it assigns a non-zero
+	probability (e.g., something in the range from 2% to 5%).  Use
+	the dφ visualization tools to help you make this choice.  A
+	larger Σ will make the game more unpredictable, a smaller one
+	will make it more deterministic.</p>
+
+      <p>The second approach is to first choose Σ and then make the
+	statistics accordingly. In this case Σ could be anything, but
+	remember that 68.3% of the rolls will fall within -Σ and +Σ,
+	and 95.4% of them will fall within -2Σ and +2Σ, so maybe don't
+	choose too small a Σ.  Values of Σ between 5 and 50 are
+	reasonable.  If you don't know what to pick,
+	pick <span class="nowrap">Σ = 8</span>.</p>
+
+      <p>After you've chosen Σ, you can set the game's statistics. A
+	good technique is to choose a fraction of Σ—we call this
+	the <strong>minor swing</strong>—and set the statistics as
+	multiples of it. For example if you set <span class="nowrap">Σ
+	= 8</span>, then increasing one statistic by +1 will increase
+	the chances of passing a check based on it by at most 5%.  So,
+	for <span class="nowrap">Σ = 8</span>, a +1 modifier is quite
+	similar to a +1 modifier on the d20, and is a decent choice
+	for the minor swing.  Note, however, that the advantage gained
+	by adding +1 becomes smaller as the might increases: if you
+	already have a +8 modifier, moving to +9 only increases your
+	chances by 2.8%. The chart below lets you visualize how much
+	adding a fraction of Σ adds to the success probability.</p>
+
+      <figure>
+	<script>
+	  function minor_update() {
+	    const ms = parseInt($('#minor-breadth').value),
+	    left = parseFloat($('#minor-range').value),
+	    right = left + 8/ms;
+	    $('#minor-left').textContent = ($('#minor-swing').left = left).toFixed(2);
+ 	    $('#minor-right').textContent = ($('#minor-swing').right = right).toFixed(2);
+	    $('#minor-swing-b').textContent = ms;
+	  }
+	</script>
+	<norm-viz id="minor-swing" σ="8" μ="0" left="0" right="1"></norm-viz>
+	<div class="caption">
+	  <span>
+	    <input type="range" min="4" value="8" max="12" step="1" id="minor-breadth"
+		   oninput="minor_update()">
+	    <span class="animated"><math><mrow><mo>+</mo><mfrac><mn>1</mn><mn id="minor-swing-b">8</mn></mfrac><mi>Σ</mi></mrow></math></span>
+	  </span>
+	  <span>
+	    <input type="range" min="-32" value="0" max="31" step=".5" id="minor-range"
+		   oninput="minor_update()">
+	    <span style="display:inline-block;width:10ex">
+	      <math class="animated"><mrow><mn id="minor-left">0.00</mn><mo>&hellip;</mo><mn id="minor-right">1.00</mn></mrow></math>
+	    </span>
+	  </span>
+	</div>
+      </figure>
+
+      
+      <h3 id="" class="optional">Critical boost</h3>
+
+      <h3 id="" class="optional">Roll quality</h3>
+      
+      <h3 id="">What does a roll represent?</h3>
+
+      <h3 id="">Helping</h3>
+      
+      <h3 id="">Taking time</h3>
+
+      <h3 id="">Advantage</h3>
+
+      <h3 id="">Situational swing modifier</h3>
+      
+      <h3 id="" class="optional">Focus</h3>
+
+      <h3 id="">Other rolls</h3>
     </section>
 
     <section id="for-scientists">
