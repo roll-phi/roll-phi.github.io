@@ -590,23 +590,26 @@
 
       <h3>Li-φ, a lightweight system</h3>
 
-      <p>Similar to many other lightweight systems, li-φ describes
-	characters using 6 <strong>attributes</strong>, an open list
-	of <strong>skills</strong> and <strong>objects</strong>.</p>
+      <p>Li-φ is what we call a CASO system: it describes
+	character's <strong>Capabilities</strong> using
+	8 <strong>Attributes</strong>, an open list
+	of <strong>Skills</strong> and <strong>Objects</strong>.</p>
 
       <p><strong>Attributes</strong> describe the character's
 	elementary phisical, psychical and social abilities.  They
 	are:</p>
 
-      <figure style="display: grid; grid-template-rows: 1fr 1fr 1fr;
+      <figure style="display: grid; grid-template-rows: 1fr 1fr 1fr 1fr;
 		     grid-auto-flow: column; text-align: center;
 		     font-weight: bold">
 	<span>Strength</span>
-	<span>Agility</span>
 	<span>Stamina</span>
+	<span>Agility</span>
+	<span>Reflexes</span>
 	<span>Intelligence</span>
 	<span>Willpower</span>
 	<span>Charisma</span>
+	<span>Appearance</span>
       </figure>
       
       <p>Hopefully the names speak for themselves. Attributes for
@@ -634,7 +637,7 @@
 
       <p>Skill values start at 0 and may grow arbitrarily.  The
 	typical playable character will cap at 12; higher values
-	represent legendary (e.g., Napoleon's war tactical acumen) or
+	represent legendary (e.g., Napoleon's war-tactical acumen) or
 	otherworldly proficiency in the skill.</p>
 
       <p><strong>Objects</strong> are tools that enable certain
@@ -658,6 +661,47 @@
 	your character's sheet, the rest being defined on the fly by
 	the gm as the need arises.</p>
 
+      <p>Each capability has a <em>might score</em> computed from the
+	attributes, skills and objects involved in it. A typical
+	capability involves a <em>major</em> and a <em>minor
+	attribute</em>, a skill and, eventually, an
+	object <var>O</var>.  The score is computed as:</p>
+
+      <math display="block">
+	<mrow>
+          <mi mathvariant="normal">major attr.</mi>
+	</mrow>
+	<mo>+</mo>
+	<mfrac>
+	  <mrow>
+	    <mi mathvariant="normal">minor attr.</mi>
+	  </mrow>
+	  <mn>2</mn>
+	</mfrac>
+	<mo>+</mo>
+	<mrow>
+	  <mi mathvariant="normal">skill</mi>
+	</mrow>
+	<mo>+</mo>
+	<mrow>
+	  <mi mathvariant="normal">object</mi>
+	</mrow>
+      </math>
+
+      <aside class="example">
+	<p>Clobbert makes a leaving by cheating at cards in the inns
+	  of the old port town.  He is a master at stacking cards: to
+	  compute his might score add his <em>agility</em> (5), half his
+	  <em>charisma</em> (3/2 = 1.5) and his <em>sleight of
+	  hand</em> skill (7), for a total of 13.5.  Whenever he can,
+	  he uses a specially marked deck that helps him set the cards
+	  in order, adding an extra +2 to the might score.</p>
+      </aside>
+
+      <p>Some capabilities may use a different combination of
+	attributes and skills. See the <a href="#for-gms">gm's
+	  guide</a> for more details.</p>
+      
       <p>That's all. There are no classes, no levels in li-φ.  There
 	are no official character creation and experience systems: the
 	gm will tell you how you are allowed to assign values to
@@ -673,16 +717,25 @@
 	decides whether or not an action attempted by one or more
 	playing characters succeeds. This encompasses several rolls from
 	other game systems: attack rolls, saving throws, skill checks,
-	opposed rolls, etc. In this guide we will use the name "check"
-	for all of them, to stress that they are, ultimately, the one
-	and same mechanic, but feel free to call them with more
-	descriptive names in your game sessions.</p>
+	opposed rolls, etc.</p>
 
-      <p>A check is in general resolved by rolling a
+      <p>A check measures a character's capability against a
+	challenge, or against another character's capability.  So, for
+	example, a character attacking an armored enemy with a sword
+	will be resolved by pitting the character's <em>melee
+	(sword)</em> capability against the enemy's <em>defense
+	(armor)</em> capability.  Another character trying to climb a
+	wall will roll a check for his <em>climbing</em> ability
+	against the challenge posed by the wall.</p>
+
+      <p>No matter how many characters and capabilities are involved,
+	a check is always resolved by rolling a single
 	<span class="nowrap">σdφ + μ</span> and checking whether the
 	outcome is positive or negative: positive means success,
-	negative means failure. The swing σ and the might μ of a check
-	depend on several factors, which we now review in order.</p>
+	negative means failure.  The capabilities of all characters
+	involved determine the might μ, whereas the swing usually
+	depends on environmental factors not tied to a single
+	character.  We now review both in details.</p>
 
       <h3 id="the-might">The might</h3>
 
@@ -696,45 +749,78 @@
 	perfect balance between two mighty opponents, the crossroads
 	where anything could happen.</p>
 
-      <p>The total might is the difference between your own might and
-	your opponents:
-
-	<math display="block">
-	  <mrow>
-	    <mi>μ</mi>
-	    <mo>=</mo>
-	    <msub><mi>μ</mi><mi mathvariant="normal">you</mi></msub>
-	    <mo>-</mo>
-	    <msub><mi>μ</mi><mi mathvariant="normal">opponent</mi></msub>
-	    <mo separator="true">.</mo>
-	  </mrow>
-	</math>
-
-	Both modifers depend on the the action that's being undertaken
-	and are computed by combining the character's statistics.</p>
+      <p>When attempting to overcome a passive obstacle, e.g. climbing
+	a wall, finding a hidden object, etc., the gm decides
+	a <em>challenge score</em> based on the difficulty of the task
+	(higher is more difficult) and indicates which of your
+	capabilities will be used in the check. Then <strong>the might
+	of the roll is given by your capability's might score minus
+	the challenge score</strong>.</p>
 
       <aside class="example">
-	<p>
-	  Yaba the tribesman attacks a royal guard with his
-	  club. Yaba's might is given by his strength plus half his
-	  character level, that is
-	  <math><mrow><mn>3</mn><mo>+</mo></mrow><mrow><mn>3</mn><mi>/</mi><mn>2</mn><mo>=</mo></mrow><mrow><mn>4.5</mn></mrow></math>. The
-	  guard's might is given by his armor's modifier plus half his
-	  agility, that is
-	  <math><mrow><mn>3</mn><mo>+</mo></mrow><mrow><mn>2</mn><mi>/</mi><mn>2</mn><mo>=</mo></mrow><mrow><mn>4</mn></mrow></math>.
-	  The total might of the roll is thus 
-	  <math><mrow><mn>4.5</mn><mo>-</mo></mrow><mrow><mn>4</mn><mo>=</mo></mrow><mrow><mn>0.5</mn></mrow></math>.</p>
+	<p>Jarvil and his gang of bandits are being chased by the
+	  royal cavalry.  They have just crossed a rope-and-planks
+	  bridge and to protect their escape he decides to use his
+	  rapier to cut the ropes holding it.  The ropes are thick, so
+	  the gm decides the challenge score to cut them is 4.</p>
+	
+	<p>Jarvil's character's sheet has no preset capability that
+	  fits well the situation, so the gm decides to improvise one
+	  based on Jarvil's <em>strength</em> (3) plus half
+	  his <em>reflexes</em> (4/2 = 2) plus
+	  his <em>swordfighting</em> skill (3); Jarvil's rapier has a
+	  light blade, not meant for this job, so the gm decides it
+	  will have a -4 modifier.</p>
+
+	<p>In summary, Jarvil's might score is 3 + 2 + 3 - 4 = 4. That
+	  minus the challenge score of 4 makes a might of 0 for the
+	  check: Jarvil has 50% chances of successfully cutting the
+	  ropes before the first guards make it across the bridge!</p>
       </aside>
-      
+
       <aside class="example">
 	<p>
 	  Yuvash the gnome is following a track in the forest when he
-	  steps into a trap. To avoid being trapped, he makes a check
-	  based on his agility plus half his wits, that
-	  is <math><mrow><mn>2</mn><mo>+</mo></mrow><mrow><mn>4</mn><mi>/</mi><mn>2</mn><mo>=</mo></mrow><mrow><mn>4</mn></mrow></math>.
-	  The trap has a might of 6, so the total might of the roll is
-	  <math><mrow><mn>4</mn><mo>-</mo></mrow><mrow><mn>6</mn><mo>=</mo></mrow><mrow><mo>-</mo><mn>2</mn></mrow></math>.
+	  steps into a trap. To avoid being trapped, he makes
+	  a <em>evasion</em> capability check based on
+	  his <em>reflexes</em> (4) plus half his <em>agility</em>
+	  (2/2 = 1) plus his <em>acrobatics</em> skill (0), that is 4
+	  + 1 + 0 = 5.  The trap has a challenge score of 6, so the
+	  total might of the roll is -1.
 	</p>
+      </aside>
+      
+      <p>When instead you use your capability against another
+	character's capability, <strong>the total might of the roll is
+	  the difference between your own might and your
+	  opponents':</strong></p>
+      
+      <math display="block">
+	<mrow>
+	  <mi>μ</mi>
+	  <mo>=</mo>
+	  <msub><mi>μ</mi><mi mathvariant="normal">you</mi></msub>
+	  <mo>-</mo>
+	  <msub><mi>μ</mi><mi mathvariant="normal">opponent</mi></msub>
+	  <mo separator="true">.</mo>
+	</mrow>
+      </math>
+      
+      <aside class="example">
+	<p>Jarvil's attempt at cutting the bridge was only partly
+	  successful: some guards made past it and they're now engaged
+	  in a fight. He attacks a royal guard with his
+	  rapier. Jarvils's <em>melee (rapier)</em> capability has
+	  might given by his <em>strength</em> (3) plus half
+	  his <em>agility</em> (3/2 = 1.5), plus
+	  his <em>swordfighting</em> skill (2) for a total of 3 + 1.5
+	  + 2 = 6.5 (his rapier is just a normal rapier and has no
+	  modifier in this case). The guard's <em>defense (armor)</em>
+	  capability is given by his <em>agility</em> (2) plus half
+	  his <em>reflexes</em> (0/2 = 0) plus
+	  his <em>swordfighting</em> skill (3) plus his <em>light
+	  armor</em> modifier (1), that is 2 + 0 + 3 + 1 = 6.  The
+	  total might of Jarvil's roll is thus 6.5 - 6 = 0.5.</p>
       </aside>
       
       <p>In many situations, gms prefer to keep the opponent's might
