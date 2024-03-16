@@ -862,16 +862,17 @@
 	this value the <em>base swing</em>.</p>
 	
       <aside class="example">
-	<p>Continuing Yuvash' example, the roll's might was determined
-	  to be <math><mo>-</mo><mn>1</mn></math>, so Yuvash needs to
-	  roll 8dφ - 1 and hope to get a positive number.  Looking at
-	  the chart below, we see Yuvash has 45% chances of escaping
-	  the trap. Play with the slider to see how different values
-	  of the base swing would have changed Yuvash' chances.
+	<p>Continuing Jarvil's example, his rapier attack's might was
+	  determined to be <math><mo>-</mo><mn>0.5</mn></math>, so je
+	  needs to roll 8dφ + 0.5 and hope to get a positive number.
+	  Looking at the chart below, we see Jarvil has 52.5% chances
+	  of hitting the guard. Play with the slider to see how
+	  different values of the base swing would have changed
+	  Yuvash' chances.
 	</p>
 
 	<figure>
-	  <norm-viz id="swing-yuvash" σ="8" μ="-1" left="0"></norm-viz>
+	  <norm-viz id="swing-yuvash" σ="8" μ="0.5" left="0"></norm-viz>
 	  <div class="caption">
 	    <span>
 	      <input type="range" min="1" value="8" max="16" step="0.1"
@@ -952,13 +953,13 @@
 
       <aside class="example">
 	<p>The Company of the Gilded Spur is fighting a dragon.
-	  Attacking with the Dragon slayer, her magical sword,
-	  Xihaia's benefits of a <strong>might</strong> equal to her
+	  Attacking with the Dragon slayer, her magic sword, Xihaia's
+	  benefits of a <strong>might</strong> equal to her
 	  <em>strength</em> plus half her <em>agility</em> plus
 	  her <em>swordfighting</em> skill plus 2, for a total
-	  of <span class="nowrap">μ = 12</span>.  The dragon's scales
+	  of <span class="nowrap">μ = 14</span>.  The dragon's scales
 	  are incredibly hard, though, and afford it
-	  a <strong>might</strong> of 25.  So Xihaia would have to
+	  a <strong>might</strong> of 27.  So Xihaia would have to
 	  roll a <span class="nowrap">8dφ - 13</span> to hit the
 	  dragon&hellip; her chances of success are a mere 5%.</p>
 
@@ -1196,7 +1197,7 @@
 	<p>The Chevalier de Chançon practices fencing with his friend
 	  the Vicomte d'Orval (another PC), who wants to teach him his
 	  famous <em>botte de Saint-Hilaire</em>. Orval feints to his
-	  right then draws the tip towards Chançon's low inside.
+	  right then draws the tip towards Chançon's low outside line.
 	  Surprised, Chançon tries to retreat and parry.  Orval's
 	  might is 6 and Chanson's is 4.  <strong>Because both are
 	  playing characters</strong>, the gm instructs the players to
@@ -1252,6 +1253,281 @@
 	mechanics of dφ, but ultimately the Rollφ app will do the
 	computations for you.</p>
       
+      <p>In this guide, we keep using li-φ as a reference system. For
+	guidance on how to create your system from scratch or how to
+	integrate dφ into a pre-existing system,
+	see <a href="#dφ-from-scratch"><em>Creating your own dφ
+	system</em></a>.</p>
+      
+      <h3 id="what-is-a-roll">What does a check represent?</h3>
+
+      <p>The most basic check in dφ tests a character's capability
+	against an opponent's capability. Examples of checks are:</p>
+
+      <ul>
+	<li>A <em>sword attack</em> against <em>dodge</em> in melee,</li>
+	<li>A <em>longbow attack</em> against <em>passive defense
+	    (armor)</em> for a surprise attack from distance,</li>
+	<li>A dragon's <em>poison breath</em> against <em>resistance
+	    (stamina)</em>,</li>
+	<li><em>Spellcasting (hypnotize)</em> against <em>resistance
+	    (willpower)</em>,</li>
+	<li>A <em>shove</em> against <em>shove</em> in a brawl.</li>
+      </ul>
+
+      <p>All these capability-on-capability checks are resolved in the
+	same way:</p>
+
+      <ol>
+	<li>Determine the PC's
+	  might
+	  <math><msub><mi>μ</mi><mi mathvariant="normal">PC</mi></msub></math>;</li>
+	<li>Determine the NPC's
+	  might
+	  <math><msub><mi>μ</mi><mi mathvariant="normal">NPC</mi></msub></math>;</li>
+	<li>The roll's might is
+	  <math>
+	    <mi>μ</mi>
+	    <mo>=</mo>
+	    <msub><mi>μ</mi><mi mathvariant="normal">PC</mi></msub>
+	    <mo>-</mo>
+	    <msub><mi>μ</mi><mi mathvariant="normal">NPC</mi></msub>
+	  </math>;</li>
+	<li>Determine the swing σ by eventually applying swing
+	  modifiers (if there are no modifiers, <span class="nowrap">σ
+	  = 8</span>);</li>
+	<li>Have the PC roll a <span class="nowrap">σdφ + μ</span>, if
+	  the roll comes out positive the PC wins.</li>
+      </ol>
+
+      <aside class="example">
+	<p>Some basic example</p>
+      </aside>
+      
+      <p>Implicitly, dφ treats a capability-on-capability
+	check <strong>as if both PC and NPC were rolling on their
+	respective capability</strong>, with the higher roll being the
+	winner. However, thanks to the mathematical properties of the
+	normal distribution, <strong>a single dφ roll is sufficient to
+	perfectly simulate the two <em>imagined</em>
+	rolls</strong>.</p>
+
+      <p>Indeed, if a character is rolling
+	<math>
+	  <mover>
+	    <mi>σ</mi>
+	    <mo stretchy="false">~</mo>
+	  </mover>
+	  <mi mathvariant="normal">d</mi>
+	  <mo>+</mo>
+	  <mi>μ₁</mi>
+	</math>
+	and another is rolling
+	<math>
+	  <mover>
+	    <mi>σ</mi>
+	    <mo stretchy="false">~</mo>
+	  </mover>
+	  <mi mathvariant="normal">d</mi>
+	  <mo>+</mo>
+	  <mi>μ₂</mi>
+	</math>
+	saying that the first roll is greater than the second is the
+	same as saying that the first roll minus the second is
+	positive. But thanks to the properties of the normal
+	distribution, the first roll minus the second follows a
+	normal distribution of parameters
+	<math>
+	  <mi>σ</mi>
+	  <mo>=</mo>
+	  <msqrt><mn>2</mn></msqrt>
+	  <mover><mi>σ</mi><mo stretchy="false">~</mo></mover>
+	</math>
+	and
+	<math>
+	  <mi>μ</mi>
+	  <mo>=</mo>
+	  <mi>μ₁</mi>
+	  <mo>-</mo>
+	  <mi>μ₂</mi>
+	</math>.  So we may as well roll <span class="nowrap">σdφ +
+	μ</span> once and forego the two imagined rolls.
+      </p>
+
+      <p>The capability-on-capability roll is so common in dφ that the
+	factor <math><msqrt><mn>2</mn></msqrt></math> of 
+	<math>
+	  <mrow>
+	    <mi>σ</mi>
+	    <mo>=</mo>
+	    <msqrt><mn>2</mn></msqrt>
+	    <mover><mi>σ</mi><mo stretchy="false">~</mo></mover>
+	  </mrow>
+	</math>
+	is already accounted for in the base swing
+	<span class="nowrap">σ = 8</span>. Said otherwise, there is in
+	dφ an implicit swing factor of
+	<math>
+      	  <mover><mi>σ</mi><mo stretchy="false">~</mo></mover>
+	  <mo>=</mo>
+	  <mn>8</mn>
+	  <mo>/</mo>
+	  <msqrt><mn>2</mn></msqrt>
+	  <mo>≈</mo>
+	  <mn>5.657</mn>
+	</math>
+	that you don't see when rolling capability-on-capability.
+	This is a good time to recall that
+	<math><mrow><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>10</mn><mi>ℏ</mi></mrow></math>.
+      </p>
+
+      <p>This distinction becomes important when a PC rolls against a
+	static challenge, rather than against an NPC's capability.
+	Indeed the philosophy in dφ is that <strong>inanimated objects
+	do not have capabilities, but may only present
+	a <em>challenge</em></strong> instead, represented by a number
+ 	<math><msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub></math>.
+ 	Concretely, this means that a check against an inanimated
+ 	object is resolved as follows:</p>
+
+      <ol>
+	<li>Determine the PC's
+	  might
+	  <math><msub><mi>μ</mi><mi mathvariant="normal">PC</mi></msub></math>;</li>
+	<li>Determine the challenge's
+	  might
+	  <math><msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub></math>;</li>
+	<li>The roll's might is
+	  <math>
+	    <mi>μ</mi>
+	    <mo>=</mo>
+	    <msub><mi>μ</mi><mi mathvariant="normal">PC</mi></msub>
+	    <mo>-</mo>
+	    <msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub>
+	  </math>;</li>
+	<li>Determine the swing σ by applying a modifier of -10ℏ to
+	  account for the fact that the challenge is inanimated;</li>
+	<li>Eventually applying any other situational modifiers to the
+	  swing;</li>
+	<li>Have the PC roll a <span class="nowrap">σdφ + μ</span>, if
+	  the roll comes out positive the PC overcomes the
+	  challenge.</li>
+      </ol>
+
+      <aside class="example">
+	<p>Continuing Yuvash' example</p>
+      </aside>
+      
+      <h3 id="capabilities">Creating capabilities</h3>
+      
+      <h3 id="critical" class="optional">Critical boost</h3>
+
+      <p>Because a dφ can roll any value from -∞ to +∞, no action is
+	ever impossible.  However some results may be so unlikely that
+	you couldn't hope them to happen in a game session, or even in
+	your whole gaming carreer.  When the might gets smaller than
+	-4σ, the chancs of success become less than 1 in 10,000.</p>
+
+      <p>Some game systems are founded on the postulate that every
+	roll must have a non-negligble probability of success (and of
+	failure).  The most obvious example is the critical hit/miss
+	in D&amp;D.</p>
+
+      <p>As an optional rule, you may decide to set a minimum
+	probability of success/failure for all rolls. We call this
+	the <strong>critical boost</strong>. A critical boost of 5%
+	matches exactly the critical rolls on a d20. Smaller critical
+	boosts, e.g, 2% or even 1% are also pretty common.</p>
+
+      <p>In the Rollφ tools, we represent the critical bonus as red
+	strips at the ends of the distribution. A roll falling in the
+	right strip is always a success, a roll falling in the left
+	strip always a failure. Play with the widget below by chaning
+	the value of the critical boost.</p>
+      
+      <figure>
+	<norm-viz id="critical" σ="8" μ="0" critical="0.05" mouse-events></norm-viz>
+	<div class="caption">
+	  <span>
+	    <input type="range" min="0" value="5" max="10" step="0.1"
+		   oninput="$('#critical').critical = ($('#crit').textContent = parseFloat(this.value).toFixed(1))/100">
+	    <math class="animated"><mrow><mi>critical</mi><mo>=</mo><mn id="crit">5.0</mn><mo>%</mo></mrow></math>
+	  </span>
+	</div>
+      </figure>
+
+      <p>The critical boost is the fastest path to integrating dφ in a
+	pre-existing system that uses critical rolls, such as D&amp;D,
+	but it is not a native concept in dφ and we don't recommend
+	using it. Indeed, it is at odds with other mechanics in dφ,
+	such as splitting dice rolls.  If your main reason for wanting
+	a critical boost is to have some rolls achieve a better result
+	than the usual success (e.g., dealing more damage on a
+	critical hit), we recommend using
+	the <a href="#quality"><em>roll quality</em> rule</a>
+	instead.</p>
+      
+      <h3 id="quality" class="optional">Roll quality</h3>
+
+      <p>After all, if the survival of your party depends on
+	rolling 20 on a die, there is probably something wrong with
+	your campaign.</p>
+	
+      <h3 id="">Helping</h3>
+      
+      <h3 id="">Taking time</h3>
+
+      <h3 id="">Advantage</h3>
+
+      <h3 id="">Situational swing modifier</h3>
+      
+      <h3 id="" class="optional">Focus</h3>
+
+      <h3 id="">Other rolls</h3>
+    </section>
+
+    <section id="for-scientists">
+      <h2>dφ for scientists</h2>
+    </section>
+
+    <section id="phaq">
+      <h2>φAQ</h2>
+
+      <h3 id="i-want-dice">I want to roll dice! Is there a way to
+	simulate dφ with normal dice?</h3>
+
+      <h3 id="i-want-a-real-dφ">Where do I find a true dφ?</h3>
+
+      <h3 id="greek-letters">What's going on with all those Greek letters?</h3>
+
+      <p>The scientific heritage of dφ is apparent in its use of Greek
+	letters. φ (<em>phi</em>, pronounced <em>fy</em>
+	or <em>fee</em>) is often used to denote the probability
+	function of the normal distribution, hence the name dφ to
+	suggest a die that rolls according to it.</p>
+
+      <p>σ (<em>sigma</em>) is universally used to denote
+	the <em>standard deviation</em> of a probability distribution,
+	while μ (<em>mu</em>) is used to denote its <em>mean</em> (i.e.,
+	its average or expectation).  When you roll σdφ + μ, you're
+	rolling according to a normal distribution of standard deviation
+	σ and mean μ, whence the symbols we use for swing and might.</p>
+
+      <h3 id="varphi-vs-phi">Is it φ or ϕ or ø or &empty; or Φ?</h3>
+
+      <p>φ, obviously.</p>
+      
+      <p>Codepoint <code>&amp;#x03C6;</code>
+	aka <code>&amp;phi;</code>. Some bad fonts render φ as ϕ, but
+	that's a grave mistake.</p>
+
+      <p>And definitely not the capital Phi letter Φ or the Scandinavian
+	letter ø or the empty set symbol &empty;. </p>
+    </section>
+
+    <section id="dnd5e">
+      <h2 id="dφ-from-scratch">Creating your own dφ system</h2>
+    
       <h3 id="base-swing">Choosing a base swing</h3>
 
       <p>Remember that every check in dφ is resolved by
@@ -1357,118 +1633,8 @@
 	  these values. Only when we adapt dφ to other game systems we
 	  may use different values.</p>
 
-      
-      <h3 id="what-is-a-roll">What does a roll represent?</h3>
 
-
-      
-      <h3 id="critical" class="optional">Critical boost</h3>
-
-      <p>Because a dφ can roll any value from -∞ to +∞, no action is
-	ever impossible.  However some results may be so unlikely that
-	you couldn't hope them to happen in a game session, or even in
-	your whole gaming carreer.  When the might gets smaller than
-	-4σ, the chancs of success become less than 1 in 10,000.</p>
-
-      <p>Some game systems are founded on the postulate that every
-	roll must have a non-negligble probability of success (and of
-	failure).  The most obvious example is the critical hit/miss
-	in D&amp;D.</p>
-
-      <p>As an optional rule, you may decide to set a minimum
-	probability of success/failure for all rolls. We call this
-	the <strong>critical boost</strong>. A critical boost of 5%
-	matches exactly the critical rolls on a d20. Smaller critical
-	boosts, e.g, 2% or even 1% are also pretty common.</p>
-
-      <p>In the Rollφ tools, we represent the critical bonus as red
-	strips at the ends of the distribution. A roll falling in the
-	right strip is always a success, a roll falling in the left
-	strip always a failure. Play with the widget below by chaning
-	the value of the critical boost.</p>
-      
-      <figure>
-	<norm-viz id="critical" σ="8" μ="0" critical="0.05" mouse-events></norm-viz>
-	<div class="caption">
-	  <span>
-	    <input type="range" min="0" value="5" max="10" step="0.1"
-		   oninput="$('#critical').critical = ($('#crit').textContent = parseFloat(this.value).toFixed(1))/100">
-	    <math class="animated"><mrow><mi>critical</mi><mo>=</mo><mn id="crit">5.0</mn><mo>%</mo></mrow></math>
-	  </span>
-	</div>
-      </figure>
-
-      <p>The critical boost is the fastest path to integrating dφ in a
-	pre-existing system that uses critical rolls, such as D&amp;D,
-	but it is not a native concept in dφ and we don't recommend
-	using it. Indeed, it is at odds with other mechanics in dφ,
-	such as splitting dice rolls.  If your main reason for wanting
-	a critical boost is to have some rolls achieve a better result
-	than the usual success (e.g., dealing more damage on a
-	critical hit), we recommend using
-	the <a href="#quality"><em>roll quality</em> rule</a>
-	instead.</p>
-      
-      <h3 id="quality" class="optional">Roll quality</h3>
-
-      <p>After all, if the survival of your party depends on
-	rolling 20 on a die, there is probably something wrong with
-	your campaign.</p>
-	
-      <h3 id="">Helping</h3>
-      
-      <h3 id="">Taking time</h3>
-
-      <h3 id="">Advantage</h3>
-
-      <h3 id="">Situational swing modifier</h3>
-      
-      <h3 id="" class="optional">Focus</h3>
-
-      <h3 id="">Other rolls</h3>
-    </section>
-
-    <section id="for-scientists">
-      <h2>dφ for scientists</h2>
-    </section>
-
-    <section id="phaq">
-      <h2>φAQ</h2>
-
-      <h3 id="i-want-dice">I want to roll dice! Is there a way to
-	simulate dφ with normal dice?</h3>
-
-      <h3 id="i-want-a-real-dφ">Where do I find a true dφ?</h3>
-
-      <h3 id="greek-letters">What's going on with all those Greek letters?</h3>
-
-      <p>The scientific heritage of dφ is apparent in its use of Greek
-	letters. φ (<em>phi</em>, pronounced <em>fy</em>
-	or <em>fee</em>) is often used to denote the probability
-	function of the normal distribution, hence the name dφ to
-	suggest a die that rolls according to it.</p>
-
-      <p>σ (<em>sigma</em>) is universally used to denote
-	the <em>standard deviation</em> of a probability distribution,
-	while μ (<em>mu</em>) is used to denote its <em>mean</em> (i.e.,
-	its average or expectation).  When you roll σdφ + μ, you're
-	rolling according to a normal distribution of standard deviation
-	σ and mean μ, whence the symbols we use for swing and might.</p>
-
-      <p>Σ is simply the capital version of σ.</p>
-      
-      <h3 id="varphi-vs-phi">Is it φ or ϕ or ø or &empty; or Φ?</h3>
-
-      <p>φ, obviously.</p>
-      
-      <p>Codepoint <code>&amp;#x03C6;</code>
-	aka <code>&amp;phi;</code>. Some bad fonts render φ as ϕ, but
-	that's a grave mistake.</p>
-
-      <p>And definitely not the capital Phi letter Φ or the Scandinavian
-	letter ø or the empty set symbol &empty;. </p>
-    </section>
-
+    
     <section id="dnd5e">
       <h2>Using dφ in D&amp;D 5e</h2>
     </section>
