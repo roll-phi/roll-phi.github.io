@@ -104,8 +104,11 @@
 	  flex-flow: row wrap;
 	  justify-content: space-around;
       }
-      .caption > *{
+      .caption > * {
 	  margin: 2px;
+      }
+      .long > * {
+	  width: 100%;
       }
       .animated {
 	  display: inline-block;
@@ -654,18 +657,16 @@
 	what <strong>capabilities</strong> are available to the
 	characters.  Examples of capabilities are: attacking with a
 	sword, firing a weapon at a target, dodging, parrying, casting
-	a spell, riding a horse, climbing a wall, etc.  We will
-	describe in the next sections how attributes, skills and
-	objects influence capabilities.  The list of capabilities is
-	truly enormous and only a few of them will be written down in
-	your character's sheet, the rest being defined on the fly by
-	the gm as the need arises.</p>
+	a spell, riding a horse, climbing a wall, etc.  The list of
+	capabilities is truly enormous and only a few of them will be
+	written down in your character's sheet, the rest being defined
+	on the fly by the gm as the need arises.</p>
 
       <p>Each capability has a <em>might score</em> computed from the
 	attributes, skills and objects involved in it. A typical
 	capability involves a <em>major</em> and a <em>minor
-	attribute</em>, a skill and, eventually, an
-	object <var>O</var>.  The score is computed as:</p>
+	attribute</em>, a skill and, eventually, an object and other
+	modifiers.  The score is computed as:</p>
 
       <math display="block">
 	<mrow>
@@ -684,7 +685,11 @@
 	</mrow>
 	<mo>+</mo>
 	<mrow>
-	  <mi mathvariant="normal">object</mi>
+	  <mi mathvariant="normal">objects</mi>
+	</mrow>
+	<mo>+</mo>
+	<mrow>
+	  <mi mathvariant="normal">modifiers</mi>
 	</mrow>
       </math>
 
@@ -720,21 +725,21 @@
 	opposed rolls, etc.</p>
 
       <p>A check measures a character's capability against a
-	challenge, or against another character's capability.  So, for
-	example, a character attacking an armored enemy with a sword
-	will be resolved by pitting the character's <em>melee
+	<em>challenge</em>, or against another character's capability.
+	So, for example, a character attacking an armored enemy with a
+	sword will be resolved by pitting the character's <em>melee
 	(sword)</em> capability against the enemy's <em>defense
 	(armor)</em> capability.  Another character trying to climb a
-	wall will roll a check for his <em>climbing</em> ability
+	wall will roll a check for his <em>climbing</em> capability
 	against the challenge posed by the wall.</p>
 
       <p>No matter how many characters and capabilities are involved,
-	a check is always resolved by rolling a single
-	<span class="nowrap">σdφ + μ</span> and checking whether the
-	outcome is positive or negative: positive means success,
-	negative means failure.  The capabilities of all characters
-	involved determine the might μ, whereas the swing usually
-	depends on environmental factors not tied to a single
+	<strong>a check is always resolved by rolling a single
+	  <span class="nowrap">σdφ + μ</span></strong> and checking
+	whether the outcome is positive or negative: positive means
+	success, negative means failure.  The capabilities of all
+	characters involved determine the might μ, whereas the swing σ
+	usually depends on environmental factors not tied to a single
 	character.  We now review both in details.</p>
 
       <h3 id="the-might">The might</h3>
@@ -755,7 +760,18 @@
 	(higher is more difficult) and indicates which of your
 	capabilities will be used in the check. Then <strong>the might
 	of the roll is given by your capability's might score minus
-	the challenge score</strong>.</p>
+	the challenge score</strong>:</p>
+
+      <math display="block">
+	<mrow>
+	  <mi>μ</mi>
+	  <mo>=</mo>
+	  <msub><mi>μ</mi><mi mathvariant="normal">you</mi></msub>
+	  <mo>-</mo>
+	  <msub><mi>μ</mi><mi mathvariant="normal">challenge</mi></msub>
+	  <mo separator="true">.</mo>
+	</mrow>
+      </math>
 
       <aside class="example">
 	<p>Jarvil and his gang of bandits are being chased by the
@@ -769,8 +785,8 @@
 	  based on Jarvil's <em>strength</em> (3) plus half
 	  his <em>reflexes</em> (4/2 = 2) plus
 	  his <em>swordfighting</em> skill (3); Jarvil's rapier has a
-	  light blade, not meant for this job, so the gm decides it
-	  will have a -4 modifier.</p>
+	  light and flexible blade, not meant for this job, so the gm
+	  decides it will have a -4 modifier.</p>
 
 	<p>In summary, Jarvil's might score is 3 + 2 + 3 - 4 = 4. That
 	  minus the challenge score of 4 makes a might of 0 for the
@@ -782,7 +798,7 @@
 	<p>
 	  Yuvash the gnome is following a track in the forest when he
 	  steps into a trap. To avoid being trapped, he makes
-	  a <em>evasion</em> capability check based on
+	  an <em>evasion</em> capability check based on
 	  his <em>reflexes</em> (4) plus half his <em>agility</em>
 	  (2/2 = 1) plus his <em>acrobatics</em> skill (0), that is 4
 	  + 1 + 0 = 5.  The trap has a challenge score of 6, so the
@@ -841,45 +857,27 @@
 	comparing mights, whereas an infinitely large swing makes
 	every check a coin toss.</p>
 
-      <p>The swing is the product of two components: the base swing Σ
-	and the swing modifier τ, thus</p>
+      <p>By default <strong>in li-φ the swing is set
+	  to <span class="nowrap">σ = 8</span></strong>, we call
+	this value the <em>base swing</em>.</p>
 	
-      <math display="block">
-	<mrow>
-	  <mi>σ</mi>
-	  <mo>=</mo>
-	  <mi>Σ</mi>
-	  <mi>τ</mi>
-	  <mo separator="true">.</mo>
-	</mrow>
-      </math>
-
-      <p>The <strong>base swing</strong> is a global parameter of the
-	game.  It is fixed by the system or by the gm at the start of
-	the campaign and never changes.  Its role is simply to set a
-	balance between the the typical statistics of characters and
-	the randomness of the dφ.  Smaller values make the game more
-	deterministic, larger values make it more unpredictable.</p>
-
       <aside class="example">
-	<p>Continuing Yuvash' example, the gm has set the base swing
-	  to <span class="nowrap">Σ = 7</span>.  The roll's might was
-	  determined to be <math><mo>-</mo><mn>2</mn></math>, so
-	  Yuvash needs to roll 7dφ - 2 and hope to get a positive
-	  number.  Looking at the chart below, we see Yuvash has
-	  nearly 39% chances of escaping the trap. Play with the
-	  slider to see how different base swings would change Yuvash'
-	  chances.
+	<p>Continuing Yuvash' example, the roll's might was determined
+	  to be <math><mo>-</mo><mn>1</mn></math>, so Yuvash needs to
+	  roll 8dφ - 1 and hope to get a positive number.  Looking at
+	  the chart below, we see Yuvash has 45% chances of escaping
+	  the trap. Play with the slider to see how different values
+	  of the base swing would have changed Yuvash' chances.
 	</p>
 
 	<figure>
-	  <norm-viz id="swing-yuvash" σ="7" μ="-2" left="0"></norm-viz>
+	  <norm-viz id="swing-yuvash" σ="8" μ="-1" left="0"></norm-viz>
 	  <div class="caption">
 	    <span>
-	      <input type="range" min="4" value="7" max="10" step="0.1"
+	      <input type="range" min="1" value="8" max="16" step="0.1"
 		     oninput="$('#σ-yuvash').textContent = ($('#swing-yuvash').σ = this.value**1).toFixed(1)">
-	      <math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="σ-yuvash">7.0</mn></mrow></math>
-	      <math class="animated"><mrow><mi>μ</mi><mo>=</mo><mn>-2</mn></mrow></math>
+	      <math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="σ-yuvash">8.0</mn></mrow></math>
+	      <math class="animated"><mrow><mi>μ</mi><mo>=</mo><mn>-1</mn></mrow></math>
 	    </span>
 	    <span>
 	      <button onclick="$('#swing-yuvash-roll').textContent =
@@ -890,23 +888,16 @@
 	</figure>
       </aside>
 
-      <p>The value of the base swing must be commensurate with the
-	typical range of might modifiers, which themselves depend on
-	the character's statistics.  When adapting a game based on the
-	d20 to dφ, values of Σ between 6 and 8 give results close to
-	the original.  For a game based on the d100, values of Σ
-	between 30 and 40 would be typical.</p>
-
-      <p>The <strong>swing modifier(s)</strong> increase or decrease
-	the base swing by a multiplicative factor. If the base swing
-	is 7 and the swing modifier is 2, the total swing will be 14.
-	Swing modifiers typically do not come from the statistics of
-	the individual characters, but rather from the situation. For
-	example, if the characters are fighting in the middle of an
-	earthquake, the gm may decide that all combat actions become
-	more unpredictable because of the unstable ground and multiply
-	the base swing by ×1.5.  When several swing modifiers apply at
-	once, they are all multiplied together.</p>
+      <p><strong><em>Swing modifiers</em> change the base swing by
+	  multiplying or dividing it</strong>, so a swing modifier of
+	  2 changes the swing to 16.  Swing modifiers typically
+	  reflect the circumstances of the check rather than the
+	  capabilities of the characters. For example, if the
+	  characters are fighting in the middle of an earthquake, the
+	  gm may decide that all combat actions become more
+	  unpredictable because of the unstable ground and apply a
+	  swing modifier of ×1.5.  When several swing modifiers apply
+	  at once, they are all multiplied together.</p>
 
       <p>It is difficult to do mental calculations with swing
 	modifiers: how fast can you multiply 7 × 1.25 × 1.02 × 0.80 in
@@ -914,30 +905,42 @@
 	other out?  For this reason, dφ uses instead
 	the <strong>hop</strong>, a <em>logarithmic unit</em>, to
 	measure swing modifiers.  The symbol of the hop is ℏ.  Zero
-	hops correspond to no modifier
-	(i.e. <math><mrow><mi>τ</mi><mo>=</mo><mn>1</mn></mrow></math>),
-	a negative number of hops decreases σ
-	(i.e. <math><mrow><mi>τ</mi><mo>&lt;</mo><mn>1</mn></mrow></math>),
-	a positive number increases it
-	(i.e. <math><mrow><mi>τ</mi><mo>&gt;</mo><mn>1</mn></mrow></math>).
-	Being a logarithmic unit, hops add instead of multiplying, so
-	applying a modifier of -3ℏ followed by one of 3ℏ totals to 0ℏ,
-	so no modifier at all.  Play with the chart below to visualize
-	the impact of swing modifiers.</p>
+	hops correspond to no modifier, a negative number of hops
+	decreases σ, a positive number increases it. Being a
+	logarithmic unit, hops add instead of multiplying, so applying
+	a modifier of -3ℏ followed by one of 3ℏ totals 0ℏ, so no
+	modifier at all.<p>
+
+      <p>The chart below lets you visualize how a swing modifier
+	measured in hops changes the swing.  Select an area of the
+	curve with the mouse, then play with the sliders to see how
+	changing the swing modifies its probability. You'll notice
+	that the change rate is much more regular when playing with
+	the hops slider than with the swing slider, which is one of
+	the great features of using hops instead of multipliers.</p>
 
       <figure>
-	<norm-viz id="norm-hops" σ="8" left="0"></norm-viz>
-	<div class="caption">
+	<script>
+	  function hops_update(σ) {
+	      $('#norm-hops').σ = σ;
+	      $('#hops-input').value =
+		  $('#hops').textContent =
+		  (Math.log(σ/8) / Math.log(Normal.hop)).toFixed(1);
+	      $('#hops-σ-input').value =
+ 		  $('#σ-hops').textContent = σ.toFixed(2);
+	  }
+	</script>
+	<norm-viz id="norm-hops" σ="8" mouse-events></norm-viz>
+	<div class="caption long">
 	  <span>
-	    <math class="animated"><mrow><mi>Σ</mi><mo>=</mo><mn>8</mn></mrow></math>
-	    <input type="range" min="-40" value="0" max="40" step="1"
-		   oninput="$('#norm-hops').σ = 8*Normal.hop**($('#hops').textContent = this.value)">
-	    <math class="animated"><mrow><mi mathvariant="normal">hops</mi><mo>=</mo><mn id="hops">0</mn><mi>ℏ</mi></mrow></math>
+	    <input type="range" min="-40" value="0" max="40" step=".1" id="hops-input"
+		   oninput="hops_update(8*Normal.hop**this.value)">
+	    <math class="animated"><mrow><mi mathvariant="normal">modifier</mi><mo>=</mo><mn id="hops">0.0</mn><mi>ℏ</mi></mrow></math>
 	  </span>
 	  <span>
-	    <input type="range" min="-10" value="0" max="10" step=".1"
-		   oninput="$('#μ-hops').textContent = ($('#norm-hops').μ = 1*this.value).toFixed(1)">
-	    <math class="animated"><mrow><mi>μ</mi><mo>=</mo><mn id="μ-hops">0.0</mn></mrow></math>
+	    <input type="range" min="2" value="8" max="32" step=".1" id="hops-σ-input"
+		   oninput="hops_update(parseFloat(this.value))">
+	    <math class="animated"><mrow><mi>σ</mi><mo>=</mo><mn id="σ-hops">8.00</mn></mrow></math>
 	  </span>
 	  <span>
 	    <button onclick="$('#norm-hops-roll').textContent =
@@ -946,6 +949,34 @@
 	  </span>
 	</div>
       </figure>
+
+      <aside class="example">
+	<p>The Company of the Gilded Spur is fighting a dragon.
+	  Attacking with the Dragon slayer, her magical sword,
+	  Xihaia's benefits of a <strong>might</strong> equal to her
+	  <em>strength</em> plus half her <em>agility</em> plus
+	  her <em>swordfighting</em> skill plus 2, for a total
+	  of <span class="nowrap">μ = 12</span>.  The dragon's scales
+	  are incredibly hard, though, and afford it
+	  a <strong>might</strong> of 25.  So Xihaia would have to
+	  roll a <span class="nowrap">8dφ - 13</span> to hit the
+	  dragon&hellip; her chances of success are a mere 5%.</p>
+
+	<p>Luckily, Shintaku the sorceress launches the
+	  spell <em>Chaos</em>: by twisting the fabric of reality
+	  itself, she bends the law of physics in an area surrounding
+	  the dragon, making every event more unpredictable. In game
+	  terms, for the duration of the spell every roll receives
+	  a <strong>swing modifier</strong> of 16ℏ (equal to
+	  Shintaku's spellcasting capability).</p>
+
+	<p>Thanks to Shintaku's spell, Xihaia's roll becomes (roughly)
+	  <span class="nowrap">13.9dφ - 13</span>, which has 17.5%
+	  chances of coming out positive.  She rolls and obtains a
+	  3.67&hellip;, a success. The Dragon slayer lodges itself
+	  between the dragon's scales and inflicts a deep wound.  The
+	  dragon is very angry, now!</p>
+      </aside>
 
       <p>It is not important to know the exact value of one hop, the
 	visual tools in dφ will help you translate hops to numbers.
@@ -1101,35 +1132,6 @@
 	  for finer grained control, so we took the tenth root of it.</p>
       </details>
 
-      <aside class="example">
-	<p>The Company of the Gilded Spur is fighting a dragon.
-	  Attacking with the Dragon slayer, her magical sword,
-	  Xihaia's benefits of a <strong>might</strong> equal to her
-	  strength plus half her agility plus half her level plus 2,
-	  for a total of <span class="nowrap">μ = 12</span>.  The
-	  dragon's scales are incredibly hard, though, and afford it
-	  a <strong>might</strong> of 25.  The <strong>base
-	  swing</strong> of the campaign is set
-	  to <span class="nowrap">Σ = 8</span>, so Xihaia would have
-	  to roll a <span class="nowrap">8dφ - 13</span> to hit the
-	  dragon&hellip; her chances of success are a mere 5%.</p>
-
-	<p>Luckily, Shintaku the sorceress launches the
-	  spell <em>Chaos</em>: by twisting the fabric of reality
-	  itself, she bends the law of physics in an area surrounding
-	  the dragon, making every event more unpredictable. In game
-	  terms, for the duration of the spell every roll receives
-	  a <strong>swing modifier</strong> of 16ℏ (twice Shintaku's
-	  level).</p>
-
-	<p>Thanks to Shintaku's spell, Xihaia's roll becomes (roughly)
-	  <span class="nowrap">13.9dφ - 13</span>, which has 17.5%
-	  chances of coming out positive.  She rolls and obtains a
-	  3.67&hellip;, a success. The Dragon slayer lodges itself
-	  between the dragon's scales and inflicts a deep wound.  The
-	  dragon is very angry, now!</p>
-      </aside>
-
       <p>Now that you know all the basics of the dφ, we can review the
 	most important rules that affect the might and the swing.  A
 	much more detailed list of rules will be given in
@@ -1158,20 +1160,21 @@
 	  with the Marquis de Fleurence (an NPC).  It is the
 	  Chevalier's turn and he prods the Marquis' defenses by
 	  thrusting his rapier, the Marquis reads the attack and tries
-	  to deflect. Chançon's might is 5 (his <em>agility</em>
-	  plus <em>half his strength</em> plus
-	  his <em>swordmanship</em>), Fleurence's might is 10 (his
-	  <em>wits</em> plus <em>half his agility</em> plus
-	  his <em>swordmanship</em>), the base swing is
-	  8.  <strong>Chançon rolls <span class="nowrap">8dφ -
-	  5</span></strong> and gets -0.24&hellip;, his foil slashes
-	  the air.</p>
+	  to deflect. Chançon's <em>attack</em> capability has might
+	  score 5 (his <em>agility</em> plus half his
+	  <em>strength</em> plus his <em>swordmanship</em>), Fleurence's
+	  <em>parry</em> has might score 10 (his
+	  <em>reflexes</em> plus half his <em>agility</em> plus
+	  his <em>swordmanship</em>).  <strong>Chançon
+	  rolls <span class="nowrap">8dφ - 5</span></strong> and gets
+	  -0.24&hellip;, his blade slashes the air.</p>
 
-	<p>The Marquis circles and ripostes aiming for Chançon's open
-	  chest, Chanson tries to disengage and parry.  Fleurence's
-	  might in this move is 8.5 (<em>agility</em> plus <em>half
-	  his strength</em> plus <em>swordmanship</em>) whereas
-	  Chançon's is 4 (<em>wits</em> plus <em>half his agility</em>
+	<p>The Marquis circle parries and ripostes aiming for
+	  Chançon's open chest, Chanson tries to recover and parry.
+	  Fleurence's <em>riposte</em> capability has might 8.5 (<em>agility</em>
+	  plus half his <em>strength</em> plus <em>swordmanship</em>)
+	  whereas Chançon's <em>parry</em> has might 4 (<em>reflexes</em> plus half his
+	  <em>agility</em>
 	  plus <em>swordmanship</em>).  <strong>Chançon is the PC, so
 	  he rolls <span class="nowrap">8dφ - 4.5</span></strong> and
 	  gets -1.32&hellip; Fleurence's blow tears Chançon's shirt
@@ -1193,12 +1196,12 @@
 	<p>The Chevalier de Chançon practices fencing with his friend
 	  the Vicomte d'Orval (another PC), who wants to teach him his
 	  famous <em>botte de Saint-Hilaire</em>. Orval feints to his
-	  right then draws the tip towards Chançon's belly.
-	  Surprised, Chançon tries to back down and parry.  Orval's
+	  right then draws the tip towards Chançon's low inside.
+	  Surprised, Chançon tries to retreat and parry.  Orval's
 	  might is 6 and Chanson's is 4.  <strong>Because both are
 	  playing characters</strong>, the gm instructs the players to
-	  roll a die each.  The base swing <span class="nowrap">Σ =
-	  8</span> is adjusted by -10ℏ and so becomes roughly
+	  roll a die each.  After applying a modifier of -10ℏ, the
+	  swing becomes roughly
 	  <span class="nowrap">σ = 5.6569&hellip;</span>.
 	  <strong>Chançon rolls <span class="nowrap">σdφ +
 	      4</span></strong> and gets 6.42&hellip;;
