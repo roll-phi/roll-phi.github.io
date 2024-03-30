@@ -69,6 +69,8 @@
 	  padding: 10px 4px;
       }
       h1, h2, h3 { margin-bottom: 0.5em; margin-top: 0.7em; }
+      h4, h5 { float:left; margin-right: 1em; }
+      h4::after, h5::after { content: "."; }
       li { margin: 0.6ex 0 0.6ex 1em;  }
       .nowrap { white-space: nowrap; }
       p { margin: 0.6ex auto; }
@@ -1261,18 +1263,56 @@
       
       <h3 id="what-is-a-roll">What does a check represent?</h3>
 
-      <p>The most basic check in dφ tests a character's capability
-	against an opponent's capability. Examples of checks are:</p>
+      <p>A check compares the capabilities of one or more characters
+	to determine the success or failure of an action. Each
+	character contributes exactly one capability: for example a PC
+	may use one of his offensive capabilities against an NPC's
+	defensive capability. If a capability is not already
+	predefined in the character's sheet, you may have to improvise
+	one, see <a href="#capabilities">Creating
+	  capabilities</a>.</p>
+
+      <p>The mechanic is always the same: for each character you
+	choose a capability and compute its might, then the mights are
+	combined to determine a roll. In general, you add together the
+	mights of the characters that are collaborating towards the
+	same goal, and subtract the mights of those that are opposing
+	it.</p>
+
+      <p>It is always possible to resolve every check with
+	a <strong>single die roll</strong>. According to dφ's
+	philosophy, a check functions <em>as if</em> each character
+	were rolling for his own capability, but the various
+	individual rolls are <em>merged into a single one</em> to
+	expedite the game. In some circumstances, though, it is more
+	fun to <strong>split the roll</strong> among several
+	characters, so that every player gets to contribute to the
+	result.  No matter whether you merge or split the rolls, the
+	rules of dφ are designed so that the chances of success are
+	mathematically the same, so the choice of splitting or merging
+	is purely one of flavor.</p>
+
+      <p>We now review the rules, going from the simplest to the most
+	advanced check. Although the computations may look involved,
+	fear not: Rollφ will compute the roll for you, so you only
+	need to have an understanding of what's going on under the
+	hood.</p>
+      
+      <h4>PC vs NPC</h4>
+      
+      <p>The most common and the simplest check tests a playing
+	character's capability against a non-playing opponent's
+	capability. Examples of checks are:</p>
 
       <ul>
-	<li>A <em>sword attack</em> against <em>dodge</em> in melee,</li>
-	<li>A <em>longbow attack</em> against <em>passive defense
+	<li>A <em>Sword attack</em> against a <em>Dodge</em> in melee,</li>
+	<li>A <em>Longbow attack</em> against <em>Passive defense
 	    (armor)</em> for a surprise attack from distance,</li>
-	<li>A dragon's <em>poison breath</em> against <em>resistance
+	<li>A dragon's <em>Poison breath</em> against <em>Resistance
 	    (stamina)</em>,</li>
-	<li><em>Spellcasting (hypnotize)</em> against <em>resistance
+	<li>A wizard's <em>Hypnotize</em> spell against <em>Resistance
 	    (willpower)</em>,</li>
-	<li>A <em>shove</em> against <em>shove</em> in a brawl.</li>
+	<li>A <em>Shove</em> against <em>Shove</em> in a brawl.</li>
       </ul>
 
       <p>All these capability-on-capability checks are resolved in the
@@ -1304,19 +1344,157 @@
 	<p>Larietta the illusionist is trying to infiltrate the
 	  headquarters of the royal guard.  First, she plans to find
 	  an isolated guard and lure him into a trap.  Walking in the
-	  streets after curfew, she easily finds a guard who tries to
-	  send her home.</p>
+	  streets after curfew, she easily stumbles upon a guard who
+	  approaches her.</p>
 
 	<p>She attracts the guard in a dark alley and casts
 	  the <em>Sleep</em> spell on him, for which she has a might
 	  of 8 (<em>charisma</em> plus half her <em>intelligence</em>
 	  plus her <em>spellcasting</em> skill).  The guard tries to
-	  resist using his <em>resistance (willpower)</em> capability,
+	  resist using his <em>Resistance (willpower)</em> capability,
 	  with might 4 (<em>willpower</em> plus half
 	  his <em>stamina</em> plus his <em>focus</em> skill).
 	  Larietta rolls 8dφ + 4 and gets a 7. The guard will be
 	  sleeping for a good while.</p>
       </aside>
+
+      <h4>PC vs PC</h4>
+
+      <p>When two PCs go against each other, you may proceed like in
+	the PC-vs-NPC case. However your players will feel much more
+	involved in the action if they both get a chance to roll.
+	When <strong>splitting a roll</strong>, each PC rolls a die,
+	applies the modifiers, and the higher roll wins.  We must be
+	careful, though, to maintain the same chances of success for
+	both players. This is how a PC-vs-PC roll is split in dφ:</p>
+      
+      <ol>
+	<li>Determine the first PC's might
+	  <math><mi>μ₁</mi></math>;</li>
+	<li>Determine the second PC's might
+	  <math><mi>μ₂</mi></math>;</li>
+	<li>Determine the swing σ by <strong>applying a modifier of
+	  -10ℏ</strong>, plus any other eventual swing modifiers;</li>
+	<li>Have the first PC roll a <span class="nowrap">σdφ + μ₁</span>;</li>
+	<li>Have the second PC roll a <span class="nowrap">σdφ + μ₂</span>;</li>
+	<li>The higher roll wins.</li>
+      </ol>
+
+      <aside class="example">
+	<p></p>
+      </aside>
+      
+      <p>Why that -10ℏ swing modifier? If we didn't apply it, the
+	player with the smallest might would gain an unfair advantage
+	in splitting the roll. By applying the modifier we
+	mathematically ensure that the chances of success for each
+	character are the same as if we hadn't split the roll.</p>
+
+      <p>But why? Let's do the maths.  Saying that the first roll is
+	greater than the second is the same as saying that the first
+	roll minus the second is greater than 0.  But thanks to the
+	formula for combining two normal distributions:</p>
+      
+      <math display="block">
+	<mrow>
+	  <mrow>
+	    <mo form="prefix" fence="true">(</mo>
+	    <mfrac><mi>σ</mi><msqrt><mn>2</mn></msqrt></mfrac>
+	    <mi mathvariant="normal">dφ</mi>
+	    <mo>+</mo>
+	    <mi>μ₁</mi>
+	    <mo form="postfix" fence="true">)</mo>
+	  </mrow>
+	  <mo>-</mo>
+	  <mrow>
+	    <mo form="prefix" fence="true">(</mo>
+	    <mfrac><mi>σ</mi><msqrt><mn>2</mn></msqrt></mfrac>
+	    <mi mathvariant="normal">dφ</mi>
+	    <mo>+</mo>
+	    <mi>μ₂</mi>
+	    <mo form="postfix" fence="true">)</mo>
+	  </mrow>
+	  <mo>=</mo>
+	</mrow>
+	<mrow>
+	  <mrow>
+	    <mi>σ</mi>
+	    <mi mathvariant="normal">dφ</mi>
+	    <mo>+</mo>
+	    <mi>μ₁</mi>
+	    <mo>-</mo>
+	    <mi>μ₂</mi>
+	  </mrow>
+	</mrow>
+      </math>
+
+      <p>So, a split roll with swing
+	<math><mfrac><mi>σ</mi><msqrt><mn>2</mn></msqrt></mfrac></math>
+	is the same as a standard roll with swing σ.  Now remember
+	that <math><msqrt><mn>2</mn></msqrt></math> is 10ℏ, so
+	dividing by <math><msqrt><mn>2</mn></msqrt></math> is the same
+	as applying a modifier of -10ℏ, and you have the
+	explanation.</p>
+      
+      <p>In fact, in dφ the standard PC-vs-NPC roll (which, recall,
+	has by default swing <span class="nowrap">σ = 8</span>) is
+	implicitly understood to be the combination of a split roll of
+	the PC against the NPC (thus with
+	swing
+	<math><mn>8</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>≈</mo><mn>5.657</mn></math>).
+	But because the PC-vs-NPC roll is the most common one, dφ uses
+	it as the base case, and applies modifiers to the split
+	case.</p>
+
+      <h4>PC vs static challenge</h4>
+      
+      <p>The same adjustment as in the PC-vs-PC case must be made when
+	a character faces a challenge other than another character.
+	Indeed the philosophy in dφ is that <strong>inanimated objects
+	do not have capabilities</strong> and thus do not get to roll.
+	Instead, they present a <em>challenge</em> measured by a
+	number
+ 	<math><msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub></math>.</p>
+
+      <p>Because only the capability of the single character is
+	rolled, we apply a -10ℏ swing modifier for consistency with
+	the PC-vs-PC case.  Concretely, proceed as follows:</p>
+
+      <ol>
+	<li>Determine the PC's
+	  might
+	  <math><msub><mi>μ</mi><mi mathvariant="normal">PC</mi></msub></math>;</li>
+	<li>Determine the challenge's
+	  might
+	  <math><msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub></math>;</li>
+	<li>The roll's might is
+	  <math>
+	    <mi>μ</mi>
+	    <mo>=</mo>
+	    <msub><mi>μ</mi><mi mathvariant="normal">PC</mi></msub>
+	    <mo>-</mo>
+	    <msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub>
+	  </math>;</li>
+	<li>Determine the swing σ by <strong>applying a modifier of
+	  -10ℏ</strong>, plus any other eventual swing modifiers;</li>
+	<li>Have the PC roll a <span class="nowrap">σdφ + μ</span>, if
+	  the roll comes out positive the PC overcomes the
+	  challenge.</li>
+      </ol>
+
+      <aside class="example">
+	<p>Remember Yuvash' the gnome, who had stepped into a trap?
+	  By comparing Yuvash' <em>evasion</em> capability (5) to the
+	  trap's challenge score (6) the might of the roll had been
+	  determined to be -1.</p>
+	<p>Because Yuvash is rolling against a trap, an inanimated
+	  object, the swing of the roll must be adjusted by -10ℏ,
+	  so <span class="nowrap">σ ≈ 5.657</span>.  Yuvash rolls
+	  5.657dφ - 1 and gets 1.02. The trap snaps close but Yuvash
+	  escapes it by a hair.</p>
+      </aside>
+
+      <h3 id="many-pcs">Checks involving more than two characters</h3>
 
       <aside class="example">
 	<p>After having put the guard to sleep, Larietta gets ready to
@@ -1341,129 +1519,11 @@
 	  fool, though, and has <em>insight</em> 11, so he's starting
 	  to suspect something&hellip;</p>
       </aside>
-      
-      <p>Implicitly, dφ treats a capability-on-capability
-	check <strong>as if both PC and NPC were rolling on their
-	respective capability</strong>, with the higher roll being the
-	winner. However, thanks to the mathematical properties of the
-	normal distribution, <strong>a single dφ roll is sufficient to
-	perfectly simulate the two <em>imagined</em>
-	rolls</strong>.</p>
 
-      <p>Indeed, if a character is rolling
-	<math>
-	  <mover>
-	    <mi>σ</mi>
-	    <mo stretchy="false">~</mo>
-	  </mover>
-	  <mi mathvariant="normal">d</mi>
-	  <mo>+</mo>
-	  <mi>μ₁</mi>
-	</math>
-	and another is rolling
-	<math>
-	  <mover>
-	    <mi>σ</mi>
-	    <mo stretchy="false">~</mo>
-	  </mover>
-	  <mi mathvariant="normal">d</mi>
-	  <mo>+</mo>
-	  <mi>μ₂</mi>
-	</math>
-	saying that the first roll is greater than the second is the
-	same as saying that the first roll minus the second is
-	positive. But thanks to the properties of the normal
-	distribution, the first roll minus the second follows a
-	normal distribution of parameters
-	<math>
-	  <mi>σ</mi>
-	  <mo>=</mo>
-	  <msqrt><mn>2</mn></msqrt>
-	  <mover><mi>σ</mi><mo stretchy="false">~</mo></mover>
-	</math>
-	and
-	<math>
-	  <mi>μ</mi>
-	  <mo>=</mo>
-	  <mi>μ₁</mi>
-	  <mo>-</mo>
-	  <mi>μ₂</mi>
-	</math>.  So we may as well roll <span class="nowrap">σdφ +
-	μ</span> once and forego the two imagined rolls.
-      </p>
+      <h3 id="splitting">Splitting and merging rolls in general</h3>
 
-      <p>The capability-on-capability roll is so common in dφ that the
-	factor <math><msqrt><mn>2</mn></msqrt></math> of 
-	<math>
-	  <mrow>
-	    <mi>σ</mi>
-	    <mo>=</mo>
-	    <msqrt><mn>2</mn></msqrt>
-	    <mover><mi>σ</mi><mo stretchy="false">~</mo></mover>
-	  </mrow>
-	</math>
-	is already accounted for in the base swing
-	<span class="nowrap">σ = 8</span>. Said otherwise, there is in
-	dφ an implicit swing factor of
-	<math>
-      	  <mover><mi>σ</mi><mo stretchy="false">~</mo></mover>
-	  <mo>=</mo>
-	  <mn>8</mn>
-	  <mo>/</mo>
-	  <msqrt><mn>2</mn></msqrt>
-	  <mo>≈</mo>
-	  <mn>5.657</mn>
-	</math>
-	that you don't see when rolling capability-on-capability.
-	This is a good time to recall that
-	<math><mrow><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>10</mn><mi>ℏ</mi></mrow></math>.
-      </p>
-
-      <p>This distinction becomes important when a PC rolls against a
-	static challenge, rather than against an NPC's capability.
-	Indeed the philosophy in dφ is that <strong>inanimated objects
-	do not have capabilities, but may only present
-	a <em>challenge</em></strong> instead, represented by a number
- 	<math><msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub></math>.
- 	Concretely, this means that a check against an inanimated
- 	object is resolved as follows:</p>
-
-      <ol>
-	<li>Determine the PC's
-	  might
-	  <math><msub><mi>μ</mi><mi mathvariant="normal">PC</mi></msub></math>;</li>
-	<li>Determine the challenge's
-	  might
-	  <math><msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub></math>;</li>
-	<li>The roll's might is
-	  <math>
-	    <mi>μ</mi>
-	    <mo>=</mo>
-	    <msub><mi>μ</mi><mi mathvariant="normal">PC</mi></msub>
-	    <mo>-</mo>
-	    <msub><mi>μ</mi><mi mathvariant="normal">chall</mi></msub>
-	  </math>;</li>
-	<li>Determine the swing σ by applying a modifier of -10ℏ to
-	  account for the fact that the challenge is inanimated;</li>
-	<li>Eventually applying any other situational modifiers to the
-	  swing;</li>
-	<li>Have the PC roll a <span class="nowrap">σdφ + μ</span>, if
-	  the roll comes out positive the PC overcomes the
-	  challenge.</li>
-      </ol>
-
-      <aside class="example">
-	<p>Remember Yuvash' the gnome, who had stepped into a trap?
-	  By comparing Yuvash' <em>evasion</em> capability (5) to the
-	  trap's challenge score (6) the might of the roll had been
-	  determined to be -1.</p>
-	<p>Because Yuvash is rolling against a trap, an inanimated
-	  object, the swing of the roll must be adjusted by -10ℏ,
-	  so <span class="nowrap">σ ≈ 5.657</span>.  Yuvash rolls
-	  5.657dφ - 1 and gets 1.02. The trap snaps close but Yuvash
-	  escapes it by a hair.</p>
-      </aside>
-      
+      <h3 id="help">Helping and taking time</h3>
+            
       <h3 id="capabilities">Creating capabilities</h3>
       
       <h3 id="critical" class="optional">Critical boost</h3>
